@@ -1,0 +1,73 @@
+﻿@model MapaTriStackdb.Models.Equipamento
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Equipamento</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Temperatura" class="control-label"></label>
+                <input asp-for="Temperatura" class="form-control" />
+                <span asp-validation-for="Temperatura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ar" class="control-label"></label>
+                <input asp-for="Ar" class="form-control" />
+                <span asp-validation-for="Ar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Agua" class="control-label"></label>
+                <input asp-for="Agua" class="form-control" />
+                <span asp-validation-for="Agua" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <input asp-for="Latitude" class="form-control" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Longitude" class="control-label"></label>
+                <input asp-for="Longitude" class="form-control" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vento" class="control-label"></label>
+                <input asp-for="Vento" class="form-control" />
+                <span asp-validation-for="Vento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Luz" class="control-label"></label>
+                <input asp-for="Luz" class="form-control" />
+                <span asp-validation-for="Luz" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Solo" class="control-label"></label>
+                <input asp-for="Solo" class="form-control" />
+                <span asp-validation-for="Solo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

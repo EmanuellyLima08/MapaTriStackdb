@@ -1,0 +1,60 @@
+﻿@model MapaTriStackdb.Models.MediaGeral
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>MediaGeral</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipamento)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipamento.Descricao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaTemperatura)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaTemperatura)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaAr)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaAr)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaLuz)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaLuz)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaAgua)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaAgua)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaSolo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaSolo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MediaVento)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MediaVento)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.MediaGeralId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

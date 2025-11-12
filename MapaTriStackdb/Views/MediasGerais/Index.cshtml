@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MapaTriStackdb.Models.MediaGeral>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaTemperatura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaAr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaLuz)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaAgua)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaSolo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaVento)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Equipamento.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaTemperatura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaAr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaLuz)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaAgua)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaSolo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MediaVento)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MediaGeralId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MediaGeralId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MediaGeralId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
