@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace MapaTriStackdb.Models
 {
@@ -29,6 +30,11 @@ namespace MapaTriStackdb.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Data do Alerta")]
-        public DateOnly? DataAlerta { get; set; }
+        public DateTime? DataAlerta { get; set; }
+
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; } = string.Empty;
+        public IdentityUser Usuario { get; set; }
+
     }
 }

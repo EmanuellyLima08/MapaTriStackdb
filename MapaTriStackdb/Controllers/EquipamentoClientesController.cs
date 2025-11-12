@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MapaTriStackdb.Controllers
 {
+    [Authorize]
     public class EquipamentoClientesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,26 +23,26 @@ namespace MapaTriStackdb.Controllers
         // GET: EquipamentoClientes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.EquipamentosClientes.Include(e => e.Equipamento).Include(e => e.Usuario);
-            return View(await applicationDbContext.ToListAsync());
+            var equipamentosClientes = _context.EquipamentosClientes
+                .Include(e => e.Equipamento)
+                .Include(e => e.Usuario);
+
+            return View(await equipamentosClientes.ToListAsync());
         }
 
         // GET: EquipamentoClientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var equipamentoCliente = await _context.EquipamentosClientes
                 .Include(e => e.Equipamento)
                 .Include(e => e.Usuario)
                 .FirstOrDefaultAsync(m => m.EquipamentoClienteId == id);
+
             if (equipamentoCliente == null)
-            {
                 return NotFound();
-            }
 
             return View(equipamentoCliente);
         }
@@ -50,13 +51,11 @@ namespace MapaTriStackdb.Controllers
         public IActionResult Create()
         {
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao");
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
         // POST: EquipamentoClientes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EquipamentoClienteId,EquipamentoId,UsuarioId,DataCompra")] EquipamentoCliente equipamentoCliente)
@@ -67,8 +66,9 @@ namespace MapaTriStackdb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "Id", equipamentoCliente.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
             return View(equipamentoCliente);
         }
 
@@ -76,31 +76,24 @@ namespace MapaTriStackdb.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var equipamentoCliente = await _context.EquipamentosClientes.FindAsync(id);
             if (equipamentoCliente == null)
-            {
                 return NotFound();
-            }
+
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "Id", equipamentoCliente.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
             return View(equipamentoCliente);
         }
 
         // POST: EquipamentoClientes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EquipamentoClienteId,EquipamentoId,UsuarioId,DataCompra")] EquipamentoCliente equipamentoCliente)
         {
             if (id != equipamentoCliente.EquipamentoClienteId)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -112,18 +105,15 @@ namespace MapaTriStackdb.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EquipamentoClienteExists(equipamentoCliente.EquipamentoClienteId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "Id", equipamentoCliente.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
             return View(equipamentoCliente);
         }
 
@@ -131,18 +121,15 @@ namespace MapaTriStackdb.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var equipamentoCliente = await _context.EquipamentosClientes
                 .Include(e => e.Equipamento)
                 .Include(e => e.Usuario)
                 .FirstOrDefaultAsync(m => m.EquipamentoClienteId == id);
+
             if (equipamentoCliente == null)
-            {
                 return NotFound();
-            }
 
             return View(equipamentoCliente);
         }
@@ -154,9 +141,7 @@ namespace MapaTriStackdb.Controllers
         {
             var equipamentoCliente = await _context.EquipamentosClientes.FindAsync(id);
             if (equipamentoCliente != null)
-            {
                 _context.EquipamentosClientes.Remove(equipamentoCliente);
-            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

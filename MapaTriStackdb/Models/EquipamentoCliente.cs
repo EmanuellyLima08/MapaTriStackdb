@@ -21,5 +21,7 @@ namespace MapaTriStackdb.Models
         [DataType(DataType.Date, ErrorMessage = "Informe uma data válida.")]
         [Display(Name = "Data de Compra")]
         public DateTime? DataCompra { get; set; }
+
+
     }
 }

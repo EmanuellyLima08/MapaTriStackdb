@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MapaTriStackdb.Models
@@ -31,5 +32,10 @@ namespace MapaTriStackdb.Models
 
         [Display(Name = "Média de Vento")]
         public int? MediaVento { get; set; }
+
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; } = string.Empty;
+        public IdentityUser Usuario { get; set; }
+
     }
 }

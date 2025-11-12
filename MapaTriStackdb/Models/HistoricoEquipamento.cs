@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace MapaTriStackdb.Models
 {
@@ -44,5 +45,10 @@ namespace MapaTriStackdb.Models
         [DataType(DataType.Date, ErrorMessage = "Informe uma data válida.")]
         [Display(Name = "Data da Leitura")]
         public DateTime? DataLeitura { get; set; }
+
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; } = string.Empty;
+        public IdentityUser Usuario { get; set; }
+
     }
 }

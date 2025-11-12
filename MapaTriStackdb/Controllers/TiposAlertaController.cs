@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MapaTriStackdb.Controllers
 {
+    [Authorize]
     public class TiposAlertaController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,23 +22,24 @@ namespace MapaTriStackdb.Controllers
         // GET: TiposAlerta
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TipoAlertas.ToListAsync());
+            var tipos = await _context.TipoAlertas
+                .OrderBy(t => t.Descricao)
+                .ToListAsync();
+
+            return View(tipos);
         }
 
         // GET: TiposAlerta/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tipoAlerta = await _context.TipoAlertas
                 .FirstOrDefaultAsync(m => m.TipoAlertaId == id);
+
             if (tipoAlerta == null)
-            {
                 return NotFound();
-            }
 
             return View(tipoAlerta);
         }
@@ -50,17 +51,23 @@ namespace MapaTriStackdb.Controllers
         }
 
         // POST: TiposAlerta/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TipoAlertaId,Descricao")] TipoAlerta tipoAlerta)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tipoAlerta);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(tipoAlerta);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "✅ Tipo de alerta criado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+                    TempData["ErrorMessage"] = "❌ Ocorreu um erro ao criar o tipo de alerta.";
+                }
             }
             return View(tipoAlerta);
         }
@@ -69,29 +76,22 @@ namespace MapaTriStackdb.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tipoAlerta = await _context.TipoAlertas.FindAsync(id);
             if (tipoAlerta == null)
-            {
                 return NotFound();
-            }
+
             return View(tipoAlerta);
         }
 
         // POST: TiposAlerta/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TipoAlertaId,Descricao")] TipoAlerta tipoAlerta)
         {
             if (id != tipoAlerta.TipoAlertaId)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -99,19 +99,20 @@ namespace MapaTriStackdb.Controllers
                 {
                     _context.Update(tipoAlerta);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "✅ Tipo de alerta atualizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TipoAlertaExists(tipoAlerta.TipoAlertaId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception)
+                {
+                    TempData["ErrorMessage"] = "❌ Ocorreu um erro ao atualizar o tipo de alerta.";
+                }
             }
             return View(tipoAlerta);
         }
@@ -120,16 +121,13 @@ namespace MapaTriStackdb.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tipoAlerta = await _context.TipoAlertas
                 .FirstOrDefaultAsync(m => m.TipoAlertaId == id);
+
             if (tipoAlerta == null)
-            {
                 return NotFound();
-            }
 
             return View(tipoAlerta);
         }
@@ -139,13 +137,25 @@ namespace MapaTriStackdb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tipoAlerta = await _context.TipoAlertas.FindAsync(id);
-            if (tipoAlerta != null)
+            try
             {
-                _context.TipoAlertas.Remove(tipoAlerta);
+                var tipoAlerta = await _context.TipoAlertas.FindAsync(id);
+                if (tipoAlerta != null)
+                {
+                    _context.TipoAlertas.Remove(tipoAlerta);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "🗑️ Tipo de alerta removido com sucesso!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "❌ Tipo de alerta não encontrado.";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "⚠️ Não foi possível excluir o tipo de alerta. Ele pode estar vinculado a outros registros.";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

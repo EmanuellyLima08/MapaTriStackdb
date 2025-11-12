@@ -1,71 +1,45 @@
 ﻿@model IEnumerable<MapaTriStackdb.Models.MediaGeral>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Médias Gerais";
 }
 
-<h1>Index</h1>
+<h1>Médias Gerais</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Adicionar Nova Média</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Equipamento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaTemperatura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaAr)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaLuz)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaAgua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaSolo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MediaVento)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Equipamento.Descricao)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaTemperatura)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaAr)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaLuz)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaAgua)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaSolo)</th>
+            <th>@Html.DisplayNameFor(model => model.MediaVento)</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Equipamento.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaTemperatura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaAr)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaLuz)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaAgua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaSolo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaVento)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MediaGeralId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MediaGeralId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MediaGeralId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Equipamento.Descricao</td>
+                <td>@item.MediaTemperatura</td>
+                <td>@item.MediaAr</td>
+                <td>@item.MediaLuz</td>
+                <td>@item.MediaAgua</td>
+                <td>@item.MediaSolo</td>
+                <td>@item.MediaVento</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-info">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

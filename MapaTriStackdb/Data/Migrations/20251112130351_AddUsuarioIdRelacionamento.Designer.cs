@@ -4,6 +4,7 @@ using MapaTriStackdb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MapaTriStackdb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251112130351_AddUsuarioIdRelacionamento")]
+    partial class AddUsuarioIdRelacionamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +33,8 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertaEquipamentoId"));
 
-                    b.Property<DateTime?>("DataAlerta")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly?>("DataAlerta")
+                        .HasColumnType("date");
 
                     b.Property<int>("EquipamentoId")
                         .HasColumnType("int");
@@ -50,10 +53,6 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("TipoAlertaId1")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("AlertaEquipamentoId");
 
                     b.HasIndex("EquipamentoId");
@@ -63,8 +62,6 @@ namespace MapaTriStackdb.Data.Migrations
                     b.HasIndex("TipoAlertaId");
 
                     b.HasIndex("TipoAlertaId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("AlertasEquipamentos", (string)null);
                 });
@@ -223,10 +220,6 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Temperatura")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("Vento")
                         .HasColumnType("int");
 
@@ -235,8 +228,6 @@ namespace MapaTriStackdb.Data.Migrations
                     b.HasIndex("EquipamentoId");
 
                     b.HasIndex("EquipamentoId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("HistoricosEquipamentos", (string)null);
                 });
@@ -273,17 +264,11 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("MediaVento")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("MediaGeralId");
 
                     b.HasIndex("EquipamentoId");
 
                     b.HasIndex("EquipamentoId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("MediasGerais", (string)null);
                 });
@@ -530,17 +515,9 @@ namespace MapaTriStackdb.Data.Migrations
                         .WithMany("Alertas")
                         .HasForeignKey("TipoAlertaId1");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Equipamento");
 
                     b.Navigation("TipoAlerta");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.Equipamento", b =>
@@ -587,15 +564,7 @@ namespace MapaTriStackdb.Data.Migrations
                         .WithMany("Historicos")
                         .HasForeignKey("EquipamentoId1");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Equipamento");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.MediaGeral", b =>
@@ -610,15 +579,7 @@ namespace MapaTriStackdb.Data.Migrations
                         .WithMany("MediasGerais")
                         .HasForeignKey("EquipamentoId1");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Equipamento");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
