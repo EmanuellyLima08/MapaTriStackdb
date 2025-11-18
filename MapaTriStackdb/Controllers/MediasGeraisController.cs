@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MapaTriStackdb.Controllers
 {
+    [Route("MediasGerais")] // ✅ FORÇA A ROTA COM S
     public class MediasGeraisController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,6 +19,8 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: /MediasGerais
+        [HttpGet("")]
+        [HttpGet("Index")]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -31,6 +34,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: /MediasGerais/Details/5
+        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -46,9 +50,9 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: /MediasGerais/Create
+        [HttpGet("Create")]
         public async Task<IActionResult> Create()
         {
-            // Carregar equipamentos do usuário para dropdown, se necessário
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Equipamentos = await _context.Equipamentos
                 .Where(e => e.UsuarioId == userId)
@@ -58,7 +62,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // POST: /MediasGerais/Create
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MediaGeral mediaGeral)
         {
@@ -69,7 +73,6 @@ namespace MapaTriStackdb.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Recarregar equipamentos caso o ModelState seja inválido
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Equipamentos = await _context.Equipamentos
                 .Where(e => e.UsuarioId == userId)
@@ -79,13 +82,13 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: /MediasGerais/Edit/5
+        [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             var mediaGeral = await _context.MediasGerais.FindAsync(id);
             if (mediaGeral == null)
                 return NotFound();
 
-            // Carregar equipamentos do usuário para dropdown
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Equipamentos = await _context.Equipamentos
                 .Where(e => e.UsuarioId == userId)
@@ -95,7 +98,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // POST: /MediasGerais/Edit/5
-        [HttpPost]
+        [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MediaGeral mediaGeral)
         {
@@ -119,7 +122,6 @@ namespace MapaTriStackdb.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Recarregar equipamentos caso o ModelState seja inválido
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewBag.Equipamentos = await _context.Equipamentos
                 .Where(e => e.UsuarioId == userId)
@@ -129,6 +131,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: /MediasGerais/Delete/5
+        [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var mediaGeral = await _context.MediasGerais
@@ -142,7 +145,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // POST: /MediasGerais/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
