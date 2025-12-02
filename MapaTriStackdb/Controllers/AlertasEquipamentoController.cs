@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
 
@@ -14,25 +13,19 @@ namespace MapaTriStackdb.Controllers
     public class AlertasEquipamentoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public AlertasEquipamentoController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AlertasEquipamentoController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: AlertasEquipamento
         public async Task<IActionResult> Index()
         {
-            // 🔹 Se quiser exibir apenas os alertas do usuário logado:
-            var user = await _userManager.GetUserAsync(User);
-
             var alertas = await _context.AlertasEquipamentos
                 .Include(a => a.Equipamento)
                 .Include(a => a.TipoAlerta)
-                .Include(a => a.Usuario)
-                .Where(a => a.UsuarioId == user.Id)
+                .Include(a => a.Cliente)
                 .ToListAsync();
 
             return View(alertas);
@@ -47,7 +40,7 @@ namespace MapaTriStackdb.Controllers
             var alertaEquipamento = await _context.AlertasEquipamentos
                 .Include(a => a.Equipamento)
                 .Include(a => a.TipoAlerta)
-                .Include(a => a.Usuario)
+                .Include(a => a.Cliente)
                 .FirstOrDefaultAsync(m => m.AlertaEquipamentoId == id);
 
             if (alertaEquipamento == null)
@@ -61,16 +54,16 @@ namespace MapaTriStackdb.Controllers
         {
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao");
             ViewData["TipoAlertaId"] = new SelectList(_context.TipoAlertas, "TipoAlertaId", "Descricao");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
+
             return View();
         }
 
         // POST: AlertasEquipamento/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EquipamentoId,TipoAlertaId,Mensagem,DataAlerta")] AlertaEquipamento alertaEquipamento)
+        public async Task<IActionResult> Create([Bind("EquipamentoId,TipoAlertaId,Mensagem,DataAlerta,ClienteId")] AlertaEquipamento alertaEquipamento)
         {
-            var user = await _userManager.GetUserAsync(User);
-            alertaEquipamento.UsuarioId = user.Id;
             alertaEquipamento.DataAlerta = DateTime.Now;
 
             if (ModelState.IsValid)
@@ -82,6 +75,8 @@ namespace MapaTriStackdb.Controllers
 
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", alertaEquipamento.EquipamentoId);
             ViewData["TipoAlertaId"] = new SelectList(_context.TipoAlertas, "TipoAlertaId", "Descricao", alertaEquipamento.TipoAlertaId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", alertaEquipamento.ClienteId);
+
             return View(alertaEquipamento);
         }
 
@@ -97,13 +92,15 @@ namespace MapaTriStackdb.Controllers
 
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", alertaEquipamento.EquipamentoId);
             ViewData["TipoAlertaId"] = new SelectList(_context.TipoAlertas, "TipoAlertaId", "Descricao", alertaEquipamento.TipoAlertaId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", alertaEquipamento.ClienteId);
+
             return View(alertaEquipamento);
         }
 
         // POST: AlertasEquipamento/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlertaEquipamentoId,EquipamentoId,TipoAlertaId,Mensagem,DataAlerta,UsuarioId")] AlertaEquipamento alertaEquipamento)
+        public async Task<IActionResult> Edit(int id, [Bind("AlertaEquipamentoId,EquipamentoId,TipoAlertaId,Mensagem,DataAlerta,ClienteId")] AlertaEquipamento alertaEquipamento)
         {
             if (id != alertaEquipamento.AlertaEquipamentoId)
                 return NotFound();
@@ -127,6 +124,8 @@ namespace MapaTriStackdb.Controllers
 
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", alertaEquipamento.EquipamentoId);
             ViewData["TipoAlertaId"] = new SelectList(_context.TipoAlertas, "TipoAlertaId", "Descricao", alertaEquipamento.TipoAlertaId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", alertaEquipamento.ClienteId);
+
             return View(alertaEquipamento);
         }
 
@@ -139,7 +138,7 @@ namespace MapaTriStackdb.Controllers
             var alertaEquipamento = await _context.AlertasEquipamentos
                 .Include(a => a.Equipamento)
                 .Include(a => a.TipoAlerta)
-                .Include(a => a.Usuario)
+                .Include(a => a.Cliente)
                 .FirstOrDefaultAsync(m => m.AlertaEquipamentoId == id);
 
             if (alertaEquipamento == null)

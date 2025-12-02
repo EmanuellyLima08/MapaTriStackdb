@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace MapaTriStackdb.Controllers
 {
@@ -20,34 +19,29 @@ namespace MapaTriStackdb.Controllers
             _context = context;
         }
 
-        // 🔹 GET: HistoricoEquipamentos
+        // GET: HistoricoEquipamentos
         public async Task<IActionResult> Index()
         {
-            // Pega o ID do usuário logado
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Filtra apenas históricos de equipamentos do usuário logado
             var historicos = await _context.HistoricosEquipamentos
                 .Include(h => h.Equipamento)
-                .Where(h => h.Equipamento.UsuarioId == userId)
+                .Include(h => h.Cliente)
                 .AsNoTracking()
                 .ToListAsync();
 
             return View(historicos);
         }
 
-        // 🔹 GET: HistoricoEquipamentos/Details/5
+        // GET: Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var historico = await _context.HistoricosEquipamentos
                 .Include(h => h.Equipamento)
+                .Include(h => h.Cliente)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.HistoricoEquipamentoId == id && m.Equipamento.UsuarioId == userId);
+                .FirstOrDefaultAsync(h => h.HistoricoEquipamentoId == id);
 
             if (historico == null)
                 return NotFound();
@@ -55,91 +49,53 @@ namespace MapaTriStackdb.Controllers
             return View(historico);
         }
 
-        // 🔹 GET: HistoricoEquipamentos/Create
+        // GET: Create
         public IActionResult Create()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Mostra apenas equipamentos do usuário logado no dropdown
-            ViewData["EquipamentoId"] = new SelectList(
-                _context.Equipamentos.Where(e => e.UsuarioId == userId),
-                "EquipamentoId",
-                "Descricao"
-            );
-
+            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             return View();
         }
 
-        // 🔹 POST: HistoricoEquipamentos/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EquipamentoId,Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo,DataLeitura")] HistoricoEquipamento historicoEquipamento)
+        public async Task<IActionResult> Create([Bind("EquipamentoId,ClienteId,Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo,DataLeitura")] HistoricoEquipamento historicoEquipamento)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Verifica se o equipamento pertence ao usuário
-            var equipamento = await _context.Equipamentos.FirstOrDefaultAsync(e => e.EquipamentoId == historicoEquipamento.EquipamentoId && e.UsuarioId == userId);
-            if (equipamento == null)
-            {
-                return Unauthorized(); // bloqueia tentativa indevida
-            }
-
             if (ModelState.IsValid)
             {
                 _context.Add(historicoEquipamento);
                 await _context.SaveChangesAsync();
+
+                await VerificarAlertas(historicoEquipamento);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["EquipamentoId"] = new SelectList(
-                _context.Equipamentos.Where(e => e.UsuarioId == userId),
-                "EquipamentoId",
-                "Descricao",
-                historicoEquipamento.EquipamentoId
-            );
-
+            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", historicoEquipamento.EquipamentoId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", historicoEquipamento.ClienteId);
             return View(historicoEquipamento);
         }
 
-        // 🔹 GET: HistoricoEquipamentos/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var historico = await _context.HistoricosEquipamentos.FindAsync(id);
+            if (historico == null) return NotFound();
 
-            var historico = await _context.HistoricosEquipamentos
-                .Include(h => h.Equipamento)
-                .FirstOrDefaultAsync(h => h.HistoricoEquipamentoId == id && h.Equipamento.UsuarioId == userId);
-
-            if (historico == null)
-                return NotFound();
-
-            ViewData["EquipamentoId"] = new SelectList(
-                _context.Equipamentos.Where(e => e.UsuarioId == userId),
-                "EquipamentoId",
-                "Descricao",
-                historico.EquipamentoId
-            );
-
+            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", historico.EquipamentoId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", historico.ClienteId);
             return View(historico);
         }
 
-        // 🔹 POST: HistoricoEquipamentos/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HistoricoEquipamentoId,EquipamentoId,Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo,DataLeitura")] HistoricoEquipamento historicoEquipamento)
+        public async Task<IActionResult> Edit(int id, [Bind("HistoricoEquipamentoId,EquipamentoId,ClienteId,Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo,DataLeitura")] HistoricoEquipamento historicoEquipamento)
         {
-            if (id != historicoEquipamento.HistoricoEquipamentoId)
-                return NotFound();
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Confere se o equipamento pertence ao usuário
-            var equipamento = await _context.Equipamentos.FirstOrDefaultAsync(e => e.EquipamentoId == historicoEquipamento.EquipamentoId && e.UsuarioId == userId);
-            if (equipamento == null)
-                return Unauthorized();
+            if (id != historicoEquipamento.HistoricoEquipamentoId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -147,6 +103,8 @@ namespace MapaTriStackdb.Controllers
                 {
                     _context.Update(historicoEquipamento);
                     await _context.SaveChangesAsync();
+
+                    await VerificarAlertas(historicoEquipamento);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,58 +116,77 @@ namespace MapaTriStackdb.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["EquipamentoId"] = new SelectList(
-                _context.Equipamentos.Where(e => e.UsuarioId == userId),
-                "EquipamentoId",
-                "Descricao",
-                historicoEquipamento.EquipamentoId
-            );
-
+            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", historicoEquipamento.EquipamentoId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", historicoEquipamento.ClienteId);
             return View(historicoEquipamento);
         }
 
-        // 🔹 GET: HistoricoEquipamentos/Delete/5
+        // GET: Delete
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-                return NotFound();
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id == null) return NotFound();
 
             var historico = await _context.HistoricosEquipamentos
                 .Include(h => h.Equipamento)
+                .Include(h => h.Cliente)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.HistoricoEquipamentoId == id && m.Equipamento.UsuarioId == userId);
+                .FirstOrDefaultAsync(h => h.HistoricoEquipamentoId == id);
 
-            if (historico == null)
-                return NotFound();
+            if (historico == null) return NotFound();
 
             return View(historico);
         }
 
-        // 🔹 POST: HistoricoEquipamentos/Delete/5
+        // POST: DeleteConfirmed
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var historico = await _context.HistoricosEquipamentos
-                .Include(h => h.Equipamento)
-                .FirstOrDefaultAsync(h => h.HistoricoEquipamentoId == id && h.Equipamento.UsuarioId == userId);
-
-            if (historico == null)
-                return Unauthorized();
-
-            _context.HistoricosEquipamentos.Remove(historico);
-            await _context.SaveChangesAsync();
+            var historico = await _context.HistoricosEquipamentos.FindAsync(id);
+            if (historico != null)
+            {
+                _context.HistoricosEquipamentos.Remove(historico);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
+        // 🔹 Checa se o registro existe
         private bool HistoricoEquipamentoExists(int id)
         {
             return _context.HistoricosEquipamentos.Any(e => e.HistoricoEquipamentoId == id);
+        }
+
+        // 🔹 Método para verificar alertas
+        private async Task VerificarAlertas(HistoricoEquipamento historico)
+        {
+            var config = await _context.ConfigAlertas.FirstOrDefaultAsync();
+            if (config == null) return;
+
+            bool alerta = false;
+            string mensagem = "";
+
+            if (historico.Temperatura >= config.TemperaturaLimite)
+            {
+                alerta = true;
+                mensagem += "Temperatura acima do limite! ";
+            }
+
+            if (historico.Ar >= config.ArLimite)
+            {
+                alerta = true;
+                mensagem += "Qualidade do ar acima do limite! ";
+            }
+
+            if (historico.Agua >= config.AguaLimite)
+            {
+                alerta = true;
+                mensagem += "Nível de água acima do permitido! ";
+            }
+
+            if (alerta)
+                TempData["Alerta"] = mensagem;
         }
     }
 }

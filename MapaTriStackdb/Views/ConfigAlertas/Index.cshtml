@@ -1,65 +1,52 @@
 ﻿@model IEnumerable<MapaTriStackdb.Models.ConfigAlerta>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Configurações de Alerta";
 }
 
-<h1>Index</h1>
+<h2>Configurações de Alerta</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
 </p>
-<table class="table">
+
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temperatura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Agua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Solo)
-            </th>
-            <th></th>
+            <th>Nome</th>
+            <th>Tipo de Alerta</th>
+            <th>Cliente</th>
+            <th>Temperatura</th>
+            <th>Umidade Ar</th>
+            <th>Vento</th>
+            <th>Água</th>
+            <th>Solo</th>
+            <th>Nível</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Temperatura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Agua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Solo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ConfigAlertaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ConfigAlertaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ConfigAlertaId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nome</td>
+                <td>@item.TipoAlerta?.Descricao</td> <!-- CORRIGIDO -->
+                <td>@item.Cliente?.Nome</td>
+
+                <td>@item.TemperaturaLimite</td>
+                <td>@item.ArLimite</td>
+                <td>@item.VentoLimite</td>
+                <td>@item.AguaLimite</td>
+                <td>@item.SoloLimite</td>
+
+                <td>@item.Nivel</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ConfigAlertaId">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.ConfigAlertaId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ConfigAlertaId">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

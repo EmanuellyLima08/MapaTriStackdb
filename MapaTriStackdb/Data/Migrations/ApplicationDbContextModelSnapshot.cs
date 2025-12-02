@@ -30,13 +30,14 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertaEquipamentoId"));
 
-                    b.Property<DateTime?>("DataAlerta")
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DataAlerta")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EquipamentoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EquipamentoId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Mensagem")
@@ -50,23 +51,36 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("TipoAlertaId1")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("AlertaEquipamentoId");
 
-                    b.HasIndex("EquipamentoId");
+                    b.HasIndex("ClienteId");
 
-                    b.HasIndex("EquipamentoId1");
+                    b.HasIndex("EquipamentoId");
 
                     b.HasIndex("TipoAlertaId");
 
                     b.HasIndex("TipoAlertaId1");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("AlertasEquipamentos", (string)null);
+                });
+
+            modelBuilder.Entity("MapaTriStackdb.Models.Cliente", b =>
+                {
+                    b.Property<string>("ClienteId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ClienteId");
+
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.ConfigAlerta", b =>
@@ -77,27 +91,42 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConfigAlertaId"));
 
-                    b.Property<int?>("Agua")
+                    b.Property<int?>("AguaLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Ar")
+                    b.Property<int?>("ArLimite")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Nivel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Solo")
+                    b.Property<int?>("SoloLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Temperatura")
+                    b.Property<int?>("TemperaturaLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Vento")
+                    b.Property<int>("TipoAlertaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VentoLimite")
                         .HasColumnType("int");
 
                     b.HasKey("ConfigAlertaId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("TipoAlertaId");
 
                     b.ToTable("ConfigAlertas", (string)null);
                 });
@@ -115,6 +144,10 @@ namespace MapaTriStackdb.Data.Migrations
 
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -136,16 +169,12 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Temperatura")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("Vento")
                         .HasColumnType("int");
 
                     b.HasKey("EquipamentoId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("ClienteId");
 
                     b.ToTable("Equipamentos", (string)null);
                 });
@@ -158,25 +187,21 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipamentoClienteId"));
 
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EquipamentoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EquipamentoId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("EquipamentoClienteId");
 
+                    b.HasIndex("ClienteId");
+
                     b.HasIndex("EquipamentoId");
-
-                    b.HasIndex("EquipamentoId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("EquipamentosClientes", (string)null);
                 });
@@ -195,6 +220,10 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("DataLeitura")
                         .HasColumnType("datetime2");
 
@@ -203,9 +232,6 @@ namespace MapaTriStackdb.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("EquipamentoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EquipamentoId1")
                         .HasColumnType("int");
 
                     b.Property<int?>("Latitude")
@@ -223,20 +249,14 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Temperatura")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("Vento")
                         .HasColumnType("int");
 
                     b.HasKey("HistoricoEquipamentoId");
 
+                    b.HasIndex("ClienteId");
+
                     b.HasIndex("EquipamentoId");
-
-                    b.HasIndex("EquipamentoId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("HistoricosEquipamentos", (string)null);
                 });
@@ -249,10 +269,11 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaGeralId"));
 
-                    b.Property<int>("EquipamentoId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClienteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("EquipamentoId1")
+                    b.Property<int>("EquipamentoId")
                         .HasColumnType("int");
 
                     b.Property<int?>("MediaAgua")
@@ -273,17 +294,11 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("MediaVento")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("MediaGeralId");
 
+                    b.HasIndex("ClienteId");
+
                     b.HasIndex("EquipamentoId");
-
-                    b.HasIndex("EquipamentoId1");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("MediasGerais", (string)null);
                 });
@@ -510,15 +525,17 @@ namespace MapaTriStackdb.Data.Migrations
 
             modelBuilder.Entity("MapaTriStackdb.Models.AlertaEquipamento", b =>
                 {
-                    b.HasOne("MapaTriStackdb.Models.Equipamento", "Equipamento")
-                        .WithMany()
-                        .HasForeignKey("EquipamentoId")
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany("Alertas")
+                        .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MapaTriStackdb.Models.Equipamento", null)
+                    b.HasOne("MapaTriStackdb.Models.Equipamento", "Equipamento")
                         .WithMany("AlertasEquipamento")
-                        .HasForeignKey("EquipamentoId1");
+                        .HasForeignKey("EquipamentoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("MapaTriStackdb.Models.TipoAlerta", "TipoAlerta")
                         .WithMany()
@@ -530,95 +547,98 @@ namespace MapaTriStackdb.Data.Migrations
                         .WithMany("Alertas")
                         .HasForeignKey("TipoAlertaId1");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cliente");
 
                     b.Navigation("Equipamento");
 
                     b.Navigation("TipoAlerta");
+                });
 
-                    b.Navigation("Usuario");
+            modelBuilder.Entity("MapaTriStackdb.Models.ConfigAlerta", b =>
+                {
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MapaTriStackdb.Models.TipoAlerta", "TipoAlerta")
+                        .WithMany()
+                        .HasForeignKey("TipoAlertaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("TipoAlerta");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.Equipamento", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany("Equipamentos")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.EquipamentoCliente", b =>
                 {
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany("EquipamentosClientes")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MapaTriStackdb.Models.Equipamento", "Equipamento")
-                        .WithMany()
+                        .WithMany("EquipamentosClientes")
                         .HasForeignKey("EquipamentoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MapaTriStackdb.Models.Equipamento", null)
-                        .WithMany("EquipamentosClientes")
-                        .HasForeignKey("EquipamentoId1");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                    b.Navigation("Cliente");
 
                     b.Navigation("Equipamento");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.HistoricoEquipamento", b =>
                 {
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany("Historicos")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MapaTriStackdb.Models.Equipamento", "Equipamento")
-                        .WithMany()
+                        .WithMany("Historicos")
                         .HasForeignKey("EquipamentoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MapaTriStackdb.Models.Equipamento", null)
-                        .WithMany("Historicos")
-                        .HasForeignKey("EquipamentoId1");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cliente");
 
                     b.Navigation("Equipamento");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.MediaGeral", b =>
                 {
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany("MediasGerais")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MapaTriStackdb.Models.Equipamento", "Equipamento")
-                        .WithMany()
+                        .WithMany("MediasGerais")
                         .HasForeignKey("EquipamentoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MapaTriStackdb.Models.Equipamento", null)
-                        .WithMany("MediasGerais")
-                        .HasForeignKey("EquipamentoId1");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cliente");
 
                     b.Navigation("Equipamento");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -670,6 +690,19 @@ namespace MapaTriStackdb.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MapaTriStackdb.Models.Cliente", b =>
+                {
+                    b.Navigation("Alertas");
+
+                    b.Navigation("Equipamentos");
+
+                    b.Navigation("EquipamentosClientes");
+
+                    b.Navigation("Historicos");
+
+                    b.Navigation("MediasGerais");
                 });
 
             modelBuilder.Entity("MapaTriStackdb.Models.Equipamento", b =>

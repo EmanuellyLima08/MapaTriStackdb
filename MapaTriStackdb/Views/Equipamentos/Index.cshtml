@@ -1,83 +1,67 @@
 ﻿@model IEnumerable<MapaTriStackdb.Models.Equipamento>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Equipamentos";
 }
 
-<h1>Index</h1>
+<h1>Equipamentos</h1>
+
+<!-- BLOCO DE ALERTA -->
+@if (TempData["Alerta"] != null)
+{
+    <div class="alert alert-danger text-center fw-bold">
+        @TempData["Alerta"]
+    </div>
+}
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temperatura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Agua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Luz)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Solo)
-            </th>
-            <th></th>
+            <th>Descrição</th>
+            <th>Cliente</th>
+            <th>Temperatura</th>
+            <th>Ar</th>
+            <th>Água</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Vento</th>
+            <th>Luz</th>
+            <th>Solo</th>
+            <th>Ações</th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Temperatura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Agua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Luz)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Solo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EquipamentoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EquipamentoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EquipamentoId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Descricao</td>
+
+                <td>
+                    @(item.Cliente != null
+                        ? item.Cliente.Nome
+                        : "Sem Cliente")
+                </td>
+
+                <td>@item.Temperatura</td>
+                <td>@item.Ar</td>
+                <td>@item.Agua</td>
+                <td>@item.Latitude</td>
+                <td>@item.Longitude</td>
+                <td>@item.Vento</td>
+                <td>@item.Luz</td>
+                <td>@item.Solo</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EquipamentoId" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.EquipamentoId" class="btn btn-info btn-sm">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.EquipamentoId" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

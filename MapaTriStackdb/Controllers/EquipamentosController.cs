@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MapaTriStackdb.Controllers
 {
@@ -14,44 +13,38 @@ namespace MapaTriStackdb.Controllers
     public class EquipamentosController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public EquipamentosController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public EquipamentosController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         // GET: Equipamentos
         public async Task<IActionResult> Index()
         {
-            // Obtém o ID do usuário logado
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Filtra apenas os equipamentos do usuário logado
+            // Inclui Cliente para exibir Nome na tabela
             var equipamentos = await _context.Equipamentos
-                .Where(e => e.UsuarioId == userId)
+                .Include(e => e.Cliente)
                 .AsNoTracking()
                 .ToListAsync();
 
             return View(equipamentos);
         }
 
-        // GET: Equipamentos/Details/5
+        // GET: Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            // Inclui Cliente + coleções relacionadas
             var equipamento = await _context.Equipamentos
+                .Include(e => e.Cliente)
                 .Include(e => e.AlertasEquipamento)
                 .Include(e => e.MediasGerais)
-                .Include(e => e.EquipamentosClientes)
                 .Include(e => e.Historicos)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.EquipamentoId == id && m.UsuarioId == userId);
+                .FirstOrDefaultAsync(e => e.EquipamentoId == id);
 
             if (equipamento == null)
                 return NotFound();
@@ -59,95 +52,85 @@ namespace MapaTriStackdb.Controllers
             return View(equipamento);
         }
 
-        // GET: Equipamentos/Create
+        // GET: Create
         public IActionResult Create()
         {
+            // DropDown exibindo Nome do Cliente
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             return View();
         }
 
-        // POST: Equipamentos/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo")] Equipamento equipamento)
+        public async Task<IActionResult> Create(Equipamento equipamento)
         {
             if (!ModelState.IsValid)
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", equipamento.ClienteId);
                 return View(equipamento);
-
-            // Define o usuário logado como dono do equipamento
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            equipamento.UsuarioId = userId;
+            }
 
             _context.Equipamentos.Add(equipamento);
             await _context.SaveChangesAsync();
+
+            // Verifica alertas após criar
+            await VerificarAlertas(equipamento);
+
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Equipamentos/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var equipamento = await _context.Equipamentos
-                .FirstOrDefaultAsync(e => e.EquipamentoId == id && e.UsuarioId == userId);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.EquipamentoId == id);
 
             if (equipamento == null)
                 return NotFound();
 
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", equipamento.ClienteId);
+
             return View(equipamento);
         }
 
-        // POST: Equipamentos/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EquipamentoId,Descricao,Temperatura,Ar,Agua,Latitude,Longitude,Vento,Luz,Solo")] Equipamento equipamento)
+        public async Task<IActionResult> Edit(int id, Equipamento equipamento)
         {
             if (id != equipamento.EquipamentoId)
                 return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var equipamentoExistente = await _context.Equipamentos
-                .FirstOrDefaultAsync(e => e.EquipamentoId == id && e.UsuarioId == userId);
-
-            if (equipamentoExistente == null)
-                return NotFound();
-
             if (!ModelState.IsValid)
+            {
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", equipamento.ClienteId);
                 return View(equipamento);
-
-            // Mantém o vínculo com o usuário
-            equipamento.UsuarioId = userId;
-
-            try
-            {
-                _context.Entry(equipamentoExistente).CurrentValues.SetValues(equipamento);
-                await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EquipamentoExists(equipamento.EquipamentoId))
-                    return NotFound();
-                else
-                    throw;
-            }
+
+            _context.Update(equipamento);
+            await _context.SaveChangesAsync();
+
+            // Verifica alertas após editar
+            await VerificarAlertas(equipamento);
 
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Equipamentos/Delete/5
+        // GET: Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var equipamento = await _context.Equipamentos
+                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.EquipamentoId == id && m.UsuarioId == userId);
+                .FirstOrDefaultAsync(e => e.EquipamentoId == id);
 
             if (equipamento == null)
                 return NotFound();
@@ -155,28 +138,58 @@ namespace MapaTriStackdb.Controllers
             return View(equipamento);
         }
 
-        // POST: Equipamentos/Delete/5
+        // POST: DeleteConfirmed
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var equipamento = await _context.Equipamentos
-                .FirstOrDefaultAsync(e => e.EquipamentoId == id && e.UsuarioId == userId);
-
+            var equipamento = await _context.Equipamentos.FindAsync(id);
             if (equipamento != null)
-            {
                 _context.Equipamentos.Remove(equipamento);
-                await _context.SaveChangesAsync();
-            }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EquipamentoExists(int id)
+        // -------------------------------------------------------------
+        // 🔥 MÉTODO PARA VERIFICAR ALERTAS (CÓPIA DA SUA REGRA DE NEGÓCIO)
+        // -------------------------------------------------------------
+        private async Task VerificarAlertas(Equipamento equipamento)
         {
-            return _context.Equipamentos.Any(e => e.EquipamentoId == id);
+            var configs = await _context.ConfigAlertas
+                .Include(c => c.TipoAlerta)
+                .AsNoTracking()
+                .ToListAsync();
+
+            foreach (var config in configs)
+            {
+                bool acendeu = false;
+
+                if (config.Nome == "Enchente" && equipamento.Agua >= config.AguaLimite)
+                    acendeu = true;
+
+                if (config.Nome == "Incêndio" &&
+                    (equipamento.Temperatura >= config.TemperaturaLimite ||
+                     equipamento.Ar <= config.ArLimite))
+                    acendeu = true;
+
+                if (config.Nome == "Tempestade" &&
+                    (equipamento.Vento >= config.VentoLimite ||
+                     equipamento.Ar >= config.ArLimite))
+                    acendeu = true;
+
+                if (config.Nome == "Praga" && equipamento.Solo >= config.SoloLimite)
+                    acendeu = true;
+
+                if (acendeu)
+                {
+                    TempData["Alerta"] =
+                        $"⚠ ALERTA DISPARADO! ({config.Nome}) — Tipo: {config.TipoAlerta?.Descricao ?? "Desconhecido"}";
+
+                    return; // Mostra apenas o primeiro alerta por vez
+                }
+            }
         }
     }
 }

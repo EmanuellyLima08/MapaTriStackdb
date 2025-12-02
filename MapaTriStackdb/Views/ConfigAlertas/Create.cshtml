@@ -1,58 +1,66 @@
 ﻿@model MapaTriStackdb.Models.ConfigAlerta
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Configuração";
 }
 
-<h1>Create</h1>
+<h2>Criar Configuração de Alerta</h2>
 
-<h4>ConfigAlerta</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Temperatura" class="control-label"></label>
-                <input asp-for="Temperatura" class="form-control" />
-                <span asp-validation-for="Temperatura" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ar" class="control-label"></label>
-                <input asp-for="Ar" class="form-control" />
-                <span asp-validation-for="Ar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vento" class="control-label"></label>
-                <input asp-for="Vento" class="form-control" />
-                <span asp-validation-for="Vento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Agua" class="control-label"></label>
-                <input asp-for="Agua" class="form-control" />
-                <span asp-validation-for="Agua" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Solo" class="control-label"></label>
-                <input asp-for="Solo" class="form-control" />
-                <span asp-validation-for="Solo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Nome" class="control-label"></label>
+        <input asp-for="Nome" class="form-control" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="TipoAlertaId" class="control-label"></label>
+        <select asp-for="TipoAlertaId" class="form-control" asp-items="ViewBag.TipoAlertaId"></select>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div class="form-group">
+        <label asp-for="ClienteId" class="control-label"></label>
+        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <label asp-for="TemperaturaLimite"></label>
+        <input asp-for="TemperaturaLimite" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ArLimite"></label>
+        <input asp-for="ArLimite" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VentoLimite"></label>
+        <input asp-for="VentoLimite" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AguaLimite"></label>
+        <input asp-for="AguaLimite" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SoloLimite"></label>
+        <input asp-for="SoloLimite" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Nivel"></label>
+        <select asp-for="Nivel" class="form-control">
+            <option>Leve</option>
+            <option>Moderado</option>
+            <option>Crítico</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>

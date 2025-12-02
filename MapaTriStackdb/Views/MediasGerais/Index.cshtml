@@ -4,40 +4,50 @@
     ViewData["Title"] = "Médias Gerais";
 }
 
-<h1>Médias Gerais</h1>
+<h2>Médias Gerais</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Adicionar Nova Média</a>
+    <a class="btn btn-primary" asp-action="Create">Calcular Nova Média</a>
 </p>
 
-<table class="table table-striped table-hover">
+<table class="table table-striped table-bordered">
     <thead class="table-dark">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Equipamento.Descricao)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaTemperatura)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaAr)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaLuz)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaAgua)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaSolo)</th>
-            <th>@Html.DisplayNameFor(model => model.MediaVento)</th>
+            <th>Equipamento</th>
+            <th>Cliente</th>
+            <th>Média Temperatura</th>
+            <th>Média Umidade Ar</th>
+            <th>Média Água</th>
+            <th>Média Solo</th>
+            <th>Média Vento</th>
+            <th>Média Luz</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var media in Model)
         {
             <tr>
-                <td>@item.Equipamento.Descricao</td>
-                <td>@item.MediaTemperatura</td>
-                <td>@item.MediaAr</td>
-                <td>@item.MediaLuz</td>
-                <td>@item.MediaAgua</td>
-                <td>@item.MediaSolo</td>
-                <td>@item.MediaVento</td>
+                <td>@media.Equipamento.Descricao</td>
+                <td>@media.Cliente.Nome</td>
+                <td>@media.MediaTemperatura</td>
+                <td>@media.MediaAr</td>
+                <td>@media.MediaAgua</td>
+                <td>@media.MediaSolo</td>
+                <td>@media.MediaVento</td>
+                <td>@media.MediaLuz</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-warning">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-info">Detalhes</a>
-                    <a asp-action="Delete" asp-route-id="@item.MediaGeralId" class="btn btn-sm btn-danger">Excluir</a>
+                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@media.MediaGeralId">Detalhes</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@media.MediaGeralId">Excluir</a>
                 </td>
             </tr>
         }

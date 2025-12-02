@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
@@ -20,133 +17,161 @@ namespace MapaTriStackdb.Controllers
             _context = context;
         }
 
-        // GET: EquipamentoClientes
+        // 🔹 Lista todos os equipamentos vinculados a clientes
         public async Task<IActionResult> Index()
         {
-            var equipamentosClientes = _context.EquipamentosClientes
+            var dados = await _context.EquipamentosClientes
                 .Include(e => e.Equipamento)
-                .Include(e => e.Usuario);
+                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome
+                .AsNoTracking()
+                .ToListAsync();
 
-            return View(await equipamentosClientes.ToListAsync());
+            return View(dados);
         }
 
-        // GET: EquipamentoClientes/Details/5
+        // 🔹 Detalhes de um vínculo específico
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
-            var equipamentoCliente = await _context.EquipamentosClientes
+            var item = await _context.EquipamentosClientes
                 .Include(e => e.Equipamento)
-                .Include(e => e.Usuario)
-                .FirstOrDefaultAsync(m => m.EquipamentoClienteId == id);
+                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.EquipamentoClienteId == id);
 
-            if (equipamentoCliente == null)
-                return NotFound();
+            if (item == null) return NotFound();
 
-            return View(equipamentoCliente);
+            return View(item);
         }
 
-        // GET: EquipamentoClientes/Create
+        // 🔹 Página de criação
         public IActionResult Create()
         {
             ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao");
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome"); // Dropdown com Nome
             return View();
         }
 
-        // POST: EquipamentoClientes/Create
+        // 🔹 Criação de um novo vínculo
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EquipamentoClienteId,EquipamentoId,UsuarioId,DataCompra")] EquipamentoCliente equipamentoCliente)
+        public async Task<IActionResult> Create(EquipamentoCliente equipamentoCliente)
         {
-            if (ModelState.IsValid)
+            // Verifica se equipamento existe
+            if (!_context.Equipamentos.Any(e => e.EquipamentoId == equipamentoCliente.EquipamentoId))
+                ModelState.AddModelError("EquipamentoId", "Equipamento não encontrado.");
+
+            // Verifica se cliente existe
+            if (!_context.Clientes.Any(u => u.ClienteId == equipamentoCliente.ClienteId))
+                ModelState.AddModelError("ClienteId", "Cliente não encontrado.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", equipamentoCliente.ClienteId);
+                return View(equipamentoCliente);
+            }
+
+            try
             {
                 _context.Add(equipamentoCliente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "✅ Vínculo de equipamento e cliente criado com sucesso!";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "❌ Ocorreu um erro ao criar o vínculo.";
             }
 
-            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
-            return View(equipamentoCliente);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: EquipamentoClientes/Edit/5
+        // 🔹 Página de edição
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
-            var equipamentoCliente = await _context.EquipamentosClientes.FindAsync(id);
-            if (equipamentoCliente == null)
-                return NotFound();
+            var item = await _context.EquipamentosClientes
+                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome no dropdown
+                .FirstOrDefaultAsync(e => e.EquipamentoClienteId == id);
 
-            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
-            return View(equipamentoCliente);
+            if (item == null) return NotFound();
+
+            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", item.EquipamentoId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", item.ClienteId);
+            return View(item);
         }
 
-        // POST: EquipamentoClientes/Edit/5
+        // 🔹 Edição de um vínculo existente
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EquipamentoClienteId,EquipamentoId,UsuarioId,DataCompra")] EquipamentoCliente equipamentoCliente)
+        public async Task<IActionResult> Edit(int id, EquipamentoCliente equipamentoCliente)
         {
-            if (id != equipamentoCliente.EquipamentoClienteId)
-                return NotFound();
+            if (id != equipamentoCliente.EquipamentoClienteId) return NotFound();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(equipamentoCliente);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EquipamentoClienteExists(equipamentoCliente.EquipamentoClienteId))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
+                ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", equipamentoCliente.ClienteId);
+                return View(equipamentoCliente);
             }
 
-            ViewData["EquipamentoId"] = new SelectList(_context.Equipamentos, "EquipamentoId", "Descricao", equipamentoCliente.EquipamentoId);
-            ViewData["UsuarioId"] = new SelectList(_context.Users, "Id", "UserName", equipamentoCliente.UsuarioId);
-            return View(equipamentoCliente);
+            try
+            {
+                _context.Update(equipamentoCliente);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "✅ Vínculo atualizado com sucesso!";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "❌ Ocorreu um erro ao atualizar o vínculo.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: EquipamentoClientes/Delete/5
+        // 🔹 Página de confirmação de exclusão
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
-            var equipamentoCliente = await _context.EquipamentosClientes
+            var item = await _context.EquipamentosClientes
                 .Include(e => e.Equipamento)
-                .Include(e => e.Usuario)
+                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.EquipamentoClienteId == id);
 
-            if (equipamentoCliente == null)
-                return NotFound();
+            if (item == null) return NotFound();
 
-            return View(equipamentoCliente);
+            return View(item);
         }
 
-        // POST: EquipamentoClientes/Delete/5
+        // 🔹 Exclusão de um vínculo
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var equipamentoCliente = await _context.EquipamentosClientes.FindAsync(id);
-            if (equipamentoCliente != null)
-                _context.EquipamentosClientes.Remove(equipamentoCliente);
+            var item = await _context.EquipamentosClientes.FindAsync(id);
 
-            await _context.SaveChangesAsync();
+            if (item != null)
+            {
+                try
+                {
+                    _context.EquipamentosClientes.Remove(item);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "🗑️ Vínculo removido com sucesso!";
+                }
+                catch (Exception)
+                {
+                    TempData["ErrorMessage"] = "⚠️ Não foi possível remover o vínculo.";
+                }
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
+        // 🔹 Verifica se o vínculo existe
         private bool EquipamentoClienteExists(int id)
         {
             return _context.EquipamentosClientes.Any(e => e.EquipamentoClienteId == id);

@@ -1,64 +1,63 @@
 ﻿@model MapaTriStackdb.Models.MediaGeral
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Média";
 }
 
-<h1>Edit</h1>
+<h2>@ViewData["Title"]</h2>
 
-<h4>MediaGeral</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MediaGeralId" />
-            <div class="form-group">
-                <label asp-for="EquipamentoId" class="control-label"></label>
-                <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
-                <span asp-validation-for="EquipamentoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaTemperatura" class="control-label"></label>
-                <input asp-for="MediaTemperatura" class="form-control" />
-                <span asp-validation-for="MediaTemperatura" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaAr" class="control-label"></label>
-                <input asp-for="MediaAr" class="form-control" />
-                <span asp-validation-for="MediaAr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaLuz" class="control-label"></label>
-                <input asp-for="MediaLuz" class="form-control" />
-                <span asp-validation-for="MediaLuz" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaAgua" class="control-label"></label>
-                <input asp-for="MediaAgua" class="form-control" />
-                <span asp-validation-for="MediaAgua" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaSolo" class="control-label"></label>
-                <input asp-for="MediaSolo" class="form-control" />
-                <span asp-validation-for="MediaSolo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MediaVento" class="control-label"></label>
-                <input asp-for="MediaVento" class="form-control" />
-                <span asp-validation-for="MediaVento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="MediaGeralId" />
+
+    <div class="form-group">
+        <label>Equipamento</label>
+        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.Equipamentos" disabled>
+            <option value="@Model.EquipamentoId">@Model.Equipamento.Descricao</option>
+        </select>
+        <small class="text-muted">Não é possível alterar o equipamento.</small>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label>Temperatura Média</label>
+        <input asp-for="MediaTemperatura" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Umidade do Ar Média</label>
+        <input asp-for="MediaAr" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Água Média</label>
+        <input asp-for="MediaAgua" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Luz Média</label>
+        <input asp-for="MediaLuz" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Solo Médio</label>
+        <input asp-for="MediaSolo" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Vento Médio</label>
+        <input asp-for="MediaVento" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

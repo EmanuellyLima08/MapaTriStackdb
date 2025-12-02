@@ -1,95 +1,48 @@
 ﻿@model IEnumerable<MapaTriStackdb.Models.HistoricoEquipamento>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Histórico de Equipamentos";
 }
 
-<h1>Index</h1>
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Alerta"] != null)
+{
+    <div class="alert alert-warning">@TempData["Alerta"]</div>
+}
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Novo Histórico</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Equipamento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Temperatura)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Agua)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Luz)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Solo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataLeitura)
-            </th>
+            <th>Equipamento</th>
+            <th>Cliente</th>
+            <th>Temperatura (°C)</th>
+            <th>Umidade do Ar (%)</th>
+            <th>Nível de Água (%)</th>
+            <th>Data da Leitura</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Equipamento.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Temperatura)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Agua)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Luz)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Solo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataLeitura)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HistoricoEquipamentoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HistoricoEquipamentoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HistoricoEquipamentoId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Equipamento?.Descricao</td>
+                <td>@item.Cliente?.Nome</td>
+                <td>@item.Temperatura</td>
+                <td>@item.Ar</td>
+                <td>@item.Agua</td>
+                <td>@item.DataLeitura?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.HistoricoEquipamentoId" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.HistoricoEquipamentoId" class="btn btn-sm btn-info">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.HistoricoEquipamentoId" class="btn btn-sm btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

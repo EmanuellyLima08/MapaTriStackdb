@@ -1,18 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MapaTriStackdb.Models
 {
     public class HistoricoEquipamento
     {
+        [Key]
         public int HistoricoEquipamentoId { get; set; }
 
+        // 🔗 RELACIONAMENTO COM EQUIPAMENTO
         [Required(ErrorMessage = "O equipamento é obrigatório.")]
         [Display(Name = "Equipamento")]
         public int EquipamentoId { get; set; }
+
+        [ForeignKey(nameof(EquipamentoId))]
         public Equipamento? Equipamento { get; set; }
 
+        // DESCRIÇÃO DA LEITURA
         [StringLength(200)]
         [Display(Name = "Descrição da Leitura")]
         public string? Descricao { get; set; }
@@ -41,14 +46,18 @@ namespace MapaTriStackdb.Models
         [Display(Name = "Umidade do Solo (%)")]
         public int? Solo { get; set; }
 
+        // DATA DA LEITURA
         [Required(ErrorMessage = "A data da leitura é obrigatória.")]
         [DataType(DataType.Date, ErrorMessage = "Informe uma data válida.")]
         [Display(Name = "Data da Leitura")]
         public DateTime? DataLeitura { get; set; }
 
-        [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; } = string.Empty;
-        public IdentityUser Usuario { get; set; }
+        // 🔗 RELACIONAMENTO COM CLIENTE
+        [Required(ErrorMessage = "Selecione um cliente.")]
+        [Display(Name = "Cliente")]
+        public string ClienteId { get; set; } = string.Empty;
 
+        [ForeignKey(nameof(ClienteId))]
+        public Cliente? Cliente { get; set; }
     }
 }

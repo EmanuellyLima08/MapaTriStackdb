@@ -1,41 +1,58 @@
 ﻿@model MapaTriStackdb.Models.EquipamentoCliente
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Cadastrar Equipamento para Usuário";
 }
 
-<h1>Create</h1>
+<h1>Cadastrar Equipamento</h1>
 
 <h4>EquipamentoCliente</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Dropdown de Equipamentos -->
             <div class="form-group">
                 <label asp-for="EquipamentoId" class="control-label"></label>
-                <select asp-for="EquipamentoId" class ="form-control" asp-items="ViewBag.EquipamentoId"></select>
+                <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId">
+                    <option value="">-- Selecione um Equipamento --</option>
+                </select>
+                <span asp-validation-for="EquipamentoId" class="text-danger"></span>
             </div>
+
+            <!-- Dropdown de Usuários -->
             <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <label asp-for="ClienteId" class="control-label"></label>
+                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+                    <option value="">-- Selecione um Usuário --</option>
+                </select>
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
             </div>
+
+            <!-- Data da Compra -->
             <div class="form-group">
                 <label asp-for="DataCompra" class="control-label"></label>
-                <input asp-for="DataCompra" class="form-control" />
+                <input asp-for="DataCompra" type="date" class="form-control" />
                 <span asp-validation-for="DataCompra" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar para a lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

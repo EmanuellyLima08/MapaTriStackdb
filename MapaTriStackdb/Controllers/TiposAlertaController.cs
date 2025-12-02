@@ -19,38 +19,35 @@ namespace MapaTriStackdb.Controllers
             _context = context;
         }
 
-        // GET: TiposAlerta
+        // 🔹 Lista todos os tipos de alerta
         public async Task<IActionResult> Index()
         {
             var tipos = await _context.TipoAlertas
                 .OrderBy(t => t.Descricao)
                 .ToListAsync();
-
             return View(tipos);
         }
 
-        // GET: TiposAlerta/Details/5
+        // 🔹 Detalhes de um tipo de alerta específico
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var tipoAlerta = await _context.TipoAlertas
                 .FirstOrDefaultAsync(m => m.TipoAlertaId == id);
 
-            if (tipoAlerta == null)
-                return NotFound();
+            if (tipoAlerta == null) return NotFound();
 
             return View(tipoAlerta);
         }
 
-        // GET: TiposAlerta/Create
+        // 🔹 Página de criação
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: TiposAlerta/Create
+        // 🔹 Criação de um novo tipo de alerta
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TipoAlertaId,Descricao")] TipoAlerta tipoAlerta)
@@ -72,26 +69,23 @@ namespace MapaTriStackdb.Controllers
             return View(tipoAlerta);
         }
 
-        // GET: TiposAlerta/Edit/5
+        // 🔹 Página de edição
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var tipoAlerta = await _context.TipoAlertas.FindAsync(id);
-            if (tipoAlerta == null)
-                return NotFound();
+            if (tipoAlerta == null) return NotFound();
 
             return View(tipoAlerta);
         }
 
-        // POST: TiposAlerta/Edit/5
+        // 🔹 Edição de um tipo de alerta existente
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TipoAlertaId,Descricao")] TipoAlerta tipoAlerta)
         {
-            if (id != tipoAlerta.TipoAlertaId)
-                return NotFound();
+            if (id != tipoAlerta.TipoAlertaId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -117,22 +111,20 @@ namespace MapaTriStackdb.Controllers
             return View(tipoAlerta);
         }
 
-        // GET: TiposAlerta/Delete/5
+        // 🔹 Página de confirmação de exclusão
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var tipoAlerta = await _context.TipoAlertas
                 .FirstOrDefaultAsync(m => m.TipoAlertaId == id);
 
-            if (tipoAlerta == null)
-                return NotFound();
+            if (tipoAlerta == null) return NotFound();
 
             return View(tipoAlerta);
         }
 
-        // POST: TiposAlerta/Delete/5
+        // 🔹 Exclusão de um tipo de alerta
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -159,6 +151,7 @@ namespace MapaTriStackdb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // 🔹 Verifica se o tipo de alerta existe
         private bool TipoAlertaExists(int id)
         {
             return _context.TipoAlertas.Any(e => e.TipoAlertaId == id);

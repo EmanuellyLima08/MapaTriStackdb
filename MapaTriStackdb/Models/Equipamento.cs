@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace MapaTriStackdb.Models
 {
     public class Equipamento
     {
+        [Key]
         public int EquipamentoId { get; set; }
 
         [Required(ErrorMessage = "A descrição do equipamento é obrigatória.")]
@@ -37,18 +38,19 @@ namespace MapaTriStackdb.Models
         [Display(Name = "Umidade do Solo (%)")]
         public int? Solo { get; set; }
 
-        // ⚡ RELAÇÃO COM USUÁRIO
-        // Guarda o ID do usuário logado (Identity)
-        [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; } = string.Empty;
+        // 🔗 CLIENTE DIRETO DO EQUIPAMENTO (FK)
+        [Required(ErrorMessage = "Selecione um cliente.")]
+        [Display(Name = "Cliente")]
+        public string ClienteId { get; set; }  // ID do Cliente (string)
 
-        public IdentityUser Usuario { get; set; }
+        // Navegação
+        [ForeignKey(nameof(ClienteId))]
+        public Cliente? Cliente { get; set; }
 
-        // Relacionamentos
+        // 🔗 RELACIONAMENTOS
         public ICollection<AlertaEquipamento>? AlertasEquipamento { get; set; }
         public ICollection<MediaGeral>? MediasGerais { get; set; }
         public ICollection<EquipamentoCliente>? EquipamentosClientes { get; set; }
         public ICollection<HistoricoEquipamento>? Historicos { get; set; }
-
     }
 }

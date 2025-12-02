@@ -1,61 +1,144 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MapaTriStackdb.Data;
 using MapaTriStackdb.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace MapaTriStackdb.Controllers
 {
     public class ClientesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public ClientesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ClientesController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
+        // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            var usuarios = _userManager.Users.ToList();
-            var listaClientes = new List<ClienteViewModel>();
+            var clientes = await _context.Clientes
+                .Include(c => c.Equipamentos)
+                .Include(c => c.Alertas)
+                .Include(c => c.Historicos)
+                .Include(c => c.MediasGerais)
+                .AsNoTracking()
+                .ToListAsync();
 
-            foreach (var user in usuarios)
+            return View(clientes);
+        }
+
+        // GET: Details
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var cliente = await _context.Clientes
+                .Include(c => c.Equipamentos)
+                .Include(c => c.Alertas)
+                .Include(c => c.Historicos)
+                .Include(c => c.MediasGerais)
+                .FirstOrDefaultAsync(c => c.ClienteId == id);
+
+            if (cliente == null)
+                return NotFound();
+
+            return View(cliente);
+        }
+
+        // GET: Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Nome,Email")] Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+                return View(cliente);
+
+            // Gera ID automaticamente
+            cliente.ClienteId = Guid.NewGuid().ToString();
+
+            _context.Clientes.Add(cliente);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Edit
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
+                return NotFound();
+
+            return View(cliente);
+        }
+
+        // POST: Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,Email")] Cliente cliente)
+        {
+            if (id != cliente.ClienteId)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(cliente);
+
+            try
             {
-                var equipamentos = await _context.Equipamentos
-                    .Where(e => e.UsuarioId == user.Id)
-                    .ToListAsync();
-
-                var alertas = await _context.AlertasEquipamentos
-                    .Where(a => a.UsuarioId == user.Id)
-                    .ToListAsync();
-
-                var historicos = await _context.HistoricosEquipamentos
-                    .Where(h => h.UsuarioId == user.Id)
-                    .ToListAsync();
-
-                var medias = await _context.MediasGerais
-                    .Where(m => m.UsuarioId == user.Id)
-                    .ToListAsync();
-
-                listaClientes.Add(new ClienteViewModel
-                {
-                    Id = user.Id,
-                    Nome = user.UserName,
-                    Email = user.Email,
-                    Equipamentos = equipamentos,
-                    Alertas = alertas,
-                    Historicos = historicos,
-                    MediasGerais = medias
-                });
+                _context.Update(cliente);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Clientes.Any(c => c.ClienteId == id))
+                    return NotFound();
+                else
+                    throw;
             }
 
-            return View(listaClientes);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Delete
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var cliente = await _context.Clientes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.ClienteId == id);
+
+            if (cliente == null)
+                return NotFound();
+
+            return View(cliente);
+        }
+
+        // POST: Delete Confirmed
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente != null)
+            {
+                _context.Clientes.Remove(cliente);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

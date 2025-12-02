@@ -1,4 +1,5 @@
 using MapaTriStackdb.Data;
+using MapaTriStackdb.Services;  // ? Adicione esta linha
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+// ?? Passo 2: registrar AlertService
+builder.Services.AddScoped<AlertService>();
 
 var app = builder.Build();
 

@@ -1,84 +1,61 @@
 ﻿@model MapaTriStackdb.Models.HistoricoEquipamento
 
 @{
-    ViewData["Title"] = "Edit";
+    var isEdit = ViewData["Title"]?.ToString()?.Contains("Editar") ?? false;
+    ViewData["Title"] = isEdit ? "Editar Histórico" : "Novo Histórico";
 }
 
-<h1>Edit</h1>
+<h2>@ViewData["Title"]</h2>
 
-<h4>HistoricoEquipamento</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="HistoricoEquipamentoId" />
-            <div class="form-group">
-                <label asp-for="EquipamentoId" class="control-label"></label>
-                <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
-                <span asp-validation-for="EquipamentoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Temperatura" class="control-label"></label>
-                <input asp-for="Temperatura" class="form-control" />
-                <span asp-validation-for="Temperatura" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ar" class="control-label"></label>
-                <input asp-for="Ar" class="form-control" />
-                <span asp-validation-for="Ar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Agua" class="control-label"></label>
-                <input asp-for="Agua" class="form-control" />
-                <span asp-validation-for="Agua" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Latitude" class="control-label"></label>
-                <input asp-for="Latitude" class="form-control" />
-                <span asp-validation-for="Latitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Longitude" class="control-label"></label>
-                <input asp-for="Longitude" class="form-control" />
-                <span asp-validation-for="Longitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vento" class="control-label"></label>
-                <input asp-for="Vento" class="form-control" />
-                <span asp-validation-for="Vento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Luz" class="control-label"></label>
-                <input asp-for="Luz" class="form-control" />
-                <span asp-validation-for="Luz" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Solo" class="control-label"></label>
-                <input asp-for="Solo" class="form-control" />
-                <span asp-validation-for="Solo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DataLeitura" class="control-label"></label>
-                <input asp-for="DataLeitura" class="form-control" />
-                <span asp-validation-for="DataLeitura" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="@(isEdit ? "Edit" : "Create")" method="post">
+    <div class="form-group">
+        <label asp-for="EquipamentoId"></label>
+        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
+        <span asp-validation-for="EquipamentoId" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="ClienteId"></label>
+        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+        <span asp-validation-for="ClienteId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Descricao"></label>
+        <input asp-for="Descricao" class="form-control" />
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Temperatura"></label>
+        <input asp-for="Temperatura" class="form-control" />
+        <span asp-validation-for="Temperatura" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Ar"></label>
+        <input asp-for="Ar" class="form-control" />
+        <span asp-validation-for="Ar" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Agua"></label>
+        <input asp-for="Agua" class="form-control" />
+        <span asp-validation-for="Agua" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DataLeitura"></label>
+        <input asp-for="DataLeitura" type="date" class="form-control" />
+        <span asp-validation-for="DataLeitura" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">@(isEdit ? "Atualizar" : "Criar")</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -6,15 +6,18 @@ namespace MapaTriStackdb.Models
 {
     public class MediaGeral
     {
+        [Key]
         public int MediaGeralId { get; set; }
 
+        // 🔗 RELACIONAMENTO COM EQUIPAMENTO
         [Required(ErrorMessage = "O Equipamento é obrigatório.")]
         [Display(Name = "Equipamento")]
         public int EquipamentoId { get; set; }
 
         [ForeignKey(nameof(EquipamentoId))]
-        public Equipamento Equipamento { get; set; } = null!; // 🔹 Relacionamento corrigido
+        public Equipamento Equipamento { get; set; } = null!;
 
+        // MÉDIAS DOS DADOS
         [Display(Name = "Média de Temperatura")]
         public int? MediaTemperatura { get; set; }
 
@@ -33,9 +36,12 @@ namespace MapaTriStackdb.Models
         [Display(Name = "Média de Vento")]
         public int? MediaVento { get; set; }
 
-        [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; } = string.Empty;
-        public IdentityUser Usuario { get; set; }
+        // 🔗 RELACIONAMENTO COM CLIENTE
+        [Required(ErrorMessage = "Selecione um cliente.")]
+        [Display(Name = "Cliente")]
+        public string ClienteId { get; set; } = string.Empty;
 
+        [ForeignKey(nameof(ClienteId))]
+        public Cliente Cliente { get; set; } = null!;
     }
 }

@@ -1,0 +1,22 @@
+﻿@model MapaTriStackdb.Models.Cliente
+
+@{
+    ViewData["Title"] = "Excluir Cliente";
+}
+
+<h2>Excluir Cliente</h2>
+
+<h4>Tem certeza de que deseja excluir este cliente?</h4>
+
+<div class="card p-3 mt-3">
+    <p><strong>Nome:</strong> @Model.Nome</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ClienteId" />
+
+    <br />
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
