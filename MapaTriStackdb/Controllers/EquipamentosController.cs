@@ -19,10 +19,92 @@ namespace MapaTriStackdb.Controllers
             _context = context;
         }
 
+        // -------------------------------------------------------------
+        // 🔥 MÉTODO PARA REGISTRAR NO HISTÓRICO AUTOMATICAMENTE
+        // -------------------------------------------------------------
+        private async Task RegistrarHistoricoAsync(Equipamento equipamento)
+        {
+            var historico = new HistoricoEquipamento
+            {
+                EquipamentoId = equipamento.EquipamentoId,
+                Temperatura = equipamento.Temperatura,
+                Ar = equipamento.Ar,
+                Agua = equipamento.Agua,
+                Latitude = equipamento.Latitude,
+                Longitude = equipamento.Longitude,
+                Vento = equipamento.Vento,
+                Luz = equipamento.Luz,
+                Solo = equipamento.Solo,
+                DataLeitura = DateTime.Now,
+                ClienteId = equipamento.ClienteId
+            };
+
+            _context.HistoricosEquipamentos.Add(historico);
+            await _context.SaveChangesAsync();
+        }
+
+        // -------------------------------------------------------------
+        // 🔥 MÉTODO PARA ATUALIZAR MÉDIA GERAL
+        // -------------------------------------------------------------
+        private async Task AtualizarMediaGeralAsync(Equipamento equipamento)
+        {
+            var historicos = await _context.HistoricosEquipamentos
+                .Where(h => h.EquipamentoId == equipamento.EquipamentoId)
+                .ToListAsync();
+
+            if (!historicos.Any())
+                return;
+
+            // Calcula médias
+            int? mediaTemp = (int?)historicos.Average(h => h.Temperatura ?? 0);
+            int? mediaAr = (int?)historicos.Average(h => h.Ar ?? 0);
+            int? mediaAgua = (int?)historicos.Average(h => h.Agua ?? 0);
+            int? mediaVento = (int?)historicos.Average(h => h.Vento ?? 0);
+            int? mediaSolo = (int?)historicos.Average(h => h.Solo ?? 0);
+            int? mediaLuz = (int?)historicos.Average(h => h.Luz ?? 0);
+
+            // Verifica se já existe registro de média para esse equipamento e cliente
+            var media = await _context.MediasGerais
+                .FirstOrDefaultAsync(m => m.EquipamentoId == equipamento.EquipamentoId &&
+                                          m.ClienteId == equipamento.ClienteId);
+
+            if (media == null)
+            {
+                // Cria novo registro de média
+                media = new MediaGeral
+                {
+                    EquipamentoId = equipamento.EquipamentoId,
+                    ClienteId = equipamento.ClienteId,
+                    MediaTemperatura = mediaTemp,
+                    MediaAr = mediaAr,
+                    MediaAgua = mediaAgua,
+                    MediaVento = mediaVento,
+                    MediaSolo = mediaSolo,
+                    MediaLuz = mediaLuz
+                };
+                _context.MediasGerais.Add(media);
+            }
+            else
+            {
+                // Atualiza média existente
+                media.MediaTemperatura = mediaTemp;
+                media.MediaAr = mediaAr;
+                media.MediaAgua = mediaAgua;
+                media.MediaVento = mediaVento;
+                media.MediaSolo = mediaSolo;
+                media.MediaLuz = mediaLuz;
+
+                _context.MediasGerais.Update(media);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        // -------------------------------------------------------------
         // GET: Equipamentos
+        // -------------------------------------------------------------
         public async Task<IActionResult> Index()
         {
-            // Inclui Cliente para exibir Nome na tabela
             var equipamentos = await _context.Equipamentos
                 .Include(e => e.Cliente)
                 .AsNoTracking()
@@ -37,7 +119,6 @@ namespace MapaTriStackdb.Controllers
             if (id == null)
                 return NotFound();
 
-            // Inclui Cliente + coleções relacionadas
             var equipamento = await _context.Equipamentos
                 .Include(e => e.Cliente)
                 .Include(e => e.AlertasEquipamento)
@@ -55,7 +136,6 @@ namespace MapaTriStackdb.Controllers
         // GET: Create
         public IActionResult Create()
         {
-            // DropDown exibindo Nome do Cliente
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             return View();
         }
@@ -71,10 +151,17 @@ namespace MapaTriStackdb.Controllers
                 return View(equipamento);
             }
 
+            // Salva equipamento
             _context.Equipamentos.Add(equipamento);
             await _context.SaveChangesAsync();
 
-            // Verifica alertas após criar
+            // Salva no histórico automaticamente
+            await RegistrarHistoricoAsync(equipamento);
+
+            // Atualiza média geral
+            await AtualizarMediaGeralAsync(equipamento);
+
+            // Verifica alertas
             await VerificarAlertas(equipamento);
 
             return RedirectToAction(nameof(Index));
@@ -112,10 +199,17 @@ namespace MapaTriStackdb.Controllers
                 return View(equipamento);
             }
 
+            // Atualiza equipamento
             _context.Update(equipamento);
             await _context.SaveChangesAsync();
 
-            // Verifica alertas após editar
+            // Salva no histórico automaticamente
+            await RegistrarHistoricoAsync(equipamento);
+
+            // Atualiza média geral
+            await AtualizarMediaGeralAsync(equipamento);
+
+            // Verifica alertas
             await VerificarAlertas(equipamento);
 
             return RedirectToAction(nameof(Index));
@@ -128,7 +222,7 @@ namespace MapaTriStackdb.Controllers
                 return NotFound();
 
             var equipamento = await _context.Equipamentos
-                .Include(e => e.Cliente) // Inclui Cliente para exibir Nome
+                .Include(e => e.Cliente)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.EquipamentoId == id);
 
@@ -153,7 +247,7 @@ namespace MapaTriStackdb.Controllers
         }
 
         // -------------------------------------------------------------
-        // 🔥 MÉTODO PARA VERIFICAR ALERTAS (CÓPIA DA SUA REGRA DE NEGÓCIO)
+        // 🔥 MÉTODO PARA VERIFICAR ALERTAS
         // -------------------------------------------------------------
         private async Task VerificarAlertas(Equipamento equipamento)
         {
@@ -187,7 +281,7 @@ namespace MapaTriStackdb.Controllers
                     TempData["Alerta"] =
                         $"⚠ ALERTA DISPARADO! ({config.Nome}) — Tipo: {config.TipoAlerta?.Descricao ?? "Desconhecido"}";
 
-                    return; // Mostra apenas o primeiro alerta por vez
+                    return;
                 }
             }
         }

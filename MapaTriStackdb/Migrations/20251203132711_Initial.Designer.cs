@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MapaTriStackdb.Data.Migrations
+namespace MapaTriStackdb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251126190545_Testeteste")]
-    partial class Testeteste
+    [Migration("20251203132711_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,10 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertaEquipamentoId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("DataAlerta")
+                    b.Property<DateTime>("DataAlerta")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EquipamentoId")
@@ -69,8 +68,11 @@ namespace MapaTriStackdb.Data.Migrations
 
             modelBuilder.Entity("MapaTriStackdb.Models.Cliente", b =>
                 {
-                    b.Property<string>("ClienteId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -94,30 +96,39 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConfigAlertaId"));
 
-                    b.Property<int?>("Agua")
+                    b.Property<int?>("AguaLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Ar")
+                    b.Property<int?>("ArLimite")
                         .HasColumnType("int");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nivel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Solo")
+                    b.Property<int?>("SoloLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Temperatura")
+                    b.Property<int?>("TemperaturaLimite")
                         .HasColumnType("int");
 
                     b.Property<int>("TipoAlertaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Vento")
+                    b.Property<int?>("VentoLimite")
                         .HasColumnType("int");
 
                     b.HasKey("ConfigAlertaId");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("TipoAlertaId");
 
@@ -138,9 +149,8 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -180,9 +190,8 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipamentoClienteId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime2");
@@ -213,9 +222,8 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataLeitura")
                         .HasColumnType("datetime2");
@@ -262,9 +270,8 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaGeralId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<int>("EquipamentoId")
                         .HasColumnType("int");
@@ -549,11 +556,19 @@ namespace MapaTriStackdb.Data.Migrations
 
             modelBuilder.Entity("MapaTriStackdb.Models.ConfigAlerta", b =>
                 {
+                    b.HasOne("MapaTriStackdb.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MapaTriStackdb.Models.TipoAlerta", "TipoAlerta")
                         .WithMany()
                         .HasForeignKey("TipoAlertaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
 
                     b.Navigation("TipoAlerta");
                 });

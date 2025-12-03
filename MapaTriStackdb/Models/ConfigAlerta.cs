@@ -25,7 +25,8 @@ namespace MapaTriStackdb.Models
         // RELACIONAMENTO COM CLIENTE (string, pois Identity usa string)
         [Required(ErrorMessage = "O cliente é obrigatório.")]
         [Display(Name = "Cliente")]
-        public string ClienteId { get; set; } = string.Empty;
+        public int ClienteId { get; set; }
+
 
         [ForeignKey(nameof(ClienteId))]
         public Cliente? Cliente { get; set; }

@@ -52,10 +52,14 @@ namespace MapaTriStackdb.Models
         [Display(Name = "Data da Leitura")]
         public DateTime? DataLeitura { get; set; }
 
+        [Required]
+        [Display(Name = "Registrado em")]
+        public DateTime DataRegistro { get; set; } = DateTime.Now;
+
         // 🔗 RELACIONAMENTO COM CLIENTE
         [Required(ErrorMessage = "Selecione um cliente.")]
         [Display(Name = "Cliente")]
-        public string ClienteId { get; set; } = string.Empty;
+        public int ClienteId { get; set; }
 
         [ForeignKey(nameof(ClienteId))]
         public Cliente? Cliente { get; set; }

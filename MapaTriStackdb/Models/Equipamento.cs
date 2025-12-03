@@ -38,10 +38,10 @@ namespace MapaTriStackdb.Models
         [Display(Name = "Umidade do Solo (%)")]
         public int? Solo { get; set; }
 
-        // 🔗 CLIENTE DIRETO DO EQUIPAMENTO (FK)
+        // 🔗 CLIENTE (FK)
         [Required(ErrorMessage = "Selecione um cliente.")]
         [Display(Name = "Cliente")]
-        public string ClienteId { get; set; }  // ID do Cliente (string)
+        public int ClienteId { get; set; }  // Agora INT, correto!
 
         // Navegação
         [ForeignKey(nameof(ClienteId))]

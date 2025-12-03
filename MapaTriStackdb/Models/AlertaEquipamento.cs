@@ -39,7 +39,8 @@ namespace MapaTriStackdb.Models
         // Cliente associado ao alerta (IdentityUser → string)
         [Required]
         [Display(Name = "Cliente")]
-        public string ClienteId { get; set; } = string.Empty;
+        public int ClienteId { get; set; }
+
 
         [ForeignKey(nameof(ClienteId))]
         public Cliente Cliente { get; set; } = null!;

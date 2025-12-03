@@ -29,11 +29,8 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: Details
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-                return NotFound();
-
             var cliente = await _context.Clientes
                 .Include(c => c.Equipamentos)
                 .Include(c => c.Alertas)
@@ -61,9 +58,6 @@ namespace MapaTriStackdb.Controllers
             if (!ModelState.IsValid)
                 return View(cliente);
 
-            // Gera ID automaticamente
-            cliente.ClienteId = Guid.NewGuid().ToString();
-
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
@@ -71,11 +65,8 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: Edit
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-                return NotFound();
-
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
                 return NotFound();
@@ -86,7 +77,7 @@ namespace MapaTriStackdb.Controllers
         // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ClienteId,Nome,Email")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nome,Email")] Cliente cliente)
         {
             if (id != cliente.ClienteId)
                 return NotFound();
@@ -111,11 +102,8 @@ namespace MapaTriStackdb.Controllers
         }
 
         // GET: Delete
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-                return NotFound();
-
             var cliente = await _context.Clientes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.ClienteId == id);
@@ -129,7 +117,7 @@ namespace MapaTriStackdb.Controllers
         // POST: Delete Confirmed
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente != null)

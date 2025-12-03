@@ -4,19 +4,16 @@ using MapaTriStackdb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MapaTriStackdb.Data.Migrations
+namespace MapaTriStackdb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251202113347_AddClienteToConfigAlerta")]
-    partial class AddClienteToConfigAlerta
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +30,10 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertaEquipamentoId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("DataAlerta")
+                    b.Property<DateTime>("DataAlerta")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EquipamentoId")
@@ -69,8 +65,11 @@ namespace MapaTriStackdb.Data.Migrations
 
             modelBuilder.Entity("MapaTriStackdb.Models.Cliente", b =>
                 {
-                    b.Property<string>("ClienteId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -94,31 +93,34 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConfigAlertaId"));
 
-                    b.Property<int?>("Agua")
+                    b.Property<int?>("AguaLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Ar")
+                    b.Property<int?>("ArLimite")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteId")
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nivel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Solo")
+                    b.Property<int?>("SoloLimite")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Temperatura")
+                    b.Property<int?>("TemperaturaLimite")
                         .HasColumnType("int");
 
                     b.Property<int>("TipoAlertaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Vento")
+                    b.Property<int?>("VentoLimite")
                         .HasColumnType("int");
 
                     b.HasKey("ConfigAlertaId");
@@ -144,9 +146,8 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -186,9 +187,8 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipamentoClienteId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime2");
@@ -219,11 +219,13 @@ namespace MapaTriStackdb.Data.Migrations
                     b.Property<int?>("Ar")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataLeitura")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataRegistro")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
@@ -268,9 +270,8 @@ namespace MapaTriStackdb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaGeralId"));
 
-                    b.Property<string>("ClienteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
 
                     b.Property<int>("EquipamentoId")
                         .HasColumnType("int");

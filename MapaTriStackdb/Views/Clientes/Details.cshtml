@@ -18,19 +18,20 @@
         <dd class="col-sm-9">@Model.Email</dd>
 
         <dt class="col-sm-3">Equipamentos</dt>
-        <dd class="col-sm-9">@Model.Equipamentos?.Count</dd>
+        <dd class="col-sm-9">@Model.Equipamentos?.Count ?? 0</dd>
 
         <dt class="col-sm-3">Alertas</dt>
-        <dd class="col-sm-9">@Model.Alertas?.Count</dd>
+        <dd class="col-sm-9">@Model.Alertas?.Count ?? 0</dd>
 
         <dt class="col-sm-3">Históricos</dt>
-        <dd class="col-sm-9">@Model.Historicos?.Count</dd>
+        <dd class="col-sm-9">@Model.Historicos?.Count ?? 0</dd>
 
         <dt class="col-sm-3">Médias Gerais</dt>
-        <dd class="col-sm-9">@Model.MediasGerais?.Count</dd>
+        <dd class="col-sm-9">@Model.MediasGerais?.Count ?? 0</dd>
     </dl>
 </div>
 
 <br />
+
 <a asp-action="Edit" asp-route-id="@Model.ClienteId" class="btn btn-warning">Editar</a>
 <a asp-action="Index" class="btn btn-secondary">Voltar</a>

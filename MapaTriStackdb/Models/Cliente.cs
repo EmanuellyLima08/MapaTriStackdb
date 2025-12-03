@@ -5,7 +5,7 @@ namespace MapaTriStackdb.Models
 {
     public class Cliente
     {
-        public string ClienteId { get; set; } = Guid.NewGuid().ToString();
+        public int ClienteId { get; set; }
 
         [Required]
         [StringLength(100)]

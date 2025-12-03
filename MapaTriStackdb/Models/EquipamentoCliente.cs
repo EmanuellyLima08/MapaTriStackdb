@@ -20,7 +20,7 @@ namespace MapaTriStackdb.Models
         // 🔗 RELACIONAMENTO COM CLIENTE
         [Required(ErrorMessage = "Selecione um cliente.")]
         [Display(Name = "Cliente")]
-        public string ClienteId { get; set; } = string.Empty;
+        public int ClienteId { get; set; }
 
         [ForeignKey(nameof(ClienteId))]
         public Cliente? Cliente { get; set; }
