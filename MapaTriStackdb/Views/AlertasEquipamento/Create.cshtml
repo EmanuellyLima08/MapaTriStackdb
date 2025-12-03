@@ -1,33 +1,48 @@
 ﻿@model MapaTriStackdb.Models.AlertaEquipamento
 
-<h2>Criar Alerta</h2>
+<h2 class="text-dark fw-bold">Criar Alerta</h2>
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
 <form asp-action="Create">
-
-    <div class="form-group">
-        <label asp-for="EquipamentoId"></label>
-        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
+    <!-- EQUIPAMENTO SELECIONÁVEL -->
+    <div class="form-group mb-3">
+        <label asp-for="EquipamentoId" class="fw-bold text-secondary"></label>
+        <select asp-for="EquipamentoId" class="form-control border" asp-items="ViewBag.EquipamentoId" style="border-color: rgba(0,0,0,0.1);">
+            <option value="">Selecione um equipamento...</option>
+        </select>
+        <span asp-validation-for="EquipamentoId" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="TipoAlertaId"></label>
-        <select asp-for="TipoAlertaId" class="form-control" asp-items="ViewBag.TipoAlertaId"></select>
+    <!-- TIPO DE ALERTA -->
+    <div class="form-group mb-3">
+        <label asp-for="TipoAlertaId" class="fw-bold text-secondary"></label>
+        <select asp-for="TipoAlertaId" class="form-control border" asp-items="ViewBag.TipoAlertaId" style="border-color: rgba(0,0,0,0.1);">
+            <option value="">Selecione um tipo de alerta...</option>
+        </select>
+        <span asp-validation-for="TipoAlertaId" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Mensagem"></label>
-        <input asp-for="Mensagem" class="form-control" />
+    <!-- MENSAGEM -->
+    <div class="form-group mb-3">
+        <label asp-for="Mensagem" class="fw-bold text-secondary"></label>
+        <input asp-for="Mensagem" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
         <span asp-validation-for="Mensagem" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="ClienteId"></label>
-        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+    <!-- CLIENTE SELECIONÁVEL -->
+    <div class="form-group mb-3">
+        <label asp-for="ClienteId" class="fw-bold text-secondary"></label>
+        <select asp-for="ClienteId" class="form-control border" asp-items="ViewBag.ClienteId" style="border-color: rgba(0,0,0,0.1);">
+            <option value="">Selecione um cliente...</option>
+        </select>
+        <span asp-validation-for="ClienteId" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Salvar</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-
+    <!-- BOTÕES -->
+    <div class="form-group mt-3">
+        <button type="submit" class="btn fw-bold" style="background-color: #00b56a; color:white;">Salvar</button>
+        <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
+    </div>
 </form>
 
 @section Scripts {

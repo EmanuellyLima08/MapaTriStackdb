@@ -1,34 +1,41 @@
 ﻿@model MapaTriStackdb.Models.AlertaEquipamento
 
-<h2>Editar Alerta</h2>
+<h2 class="text-dark fw-bold">Editar Alerta</h2>
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
 <form asp-action="Edit">
 
     <input type="hidden" asp-for="AlertaEquipamentoId" />
 
-    <div class="form-group">
-        <label asp-for="EquipamentoId"></label>
-        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
+    <div class="form-group mb-3">
+        <label asp-for="EquipamentoId" class="fw-bold text-secondary"></label>
+        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId">
+            <option value="">Selecione um equipamento...</option>
+        </select>
     </div>
 
-    <div class="form-group">
-        <label asp-for="TipoAlertaId"></label>
-        <select asp-for="TipoAlertaId" class="form-control" asp-items="ViewBag.TipoAlertaId"></select>
+    <div class="form-group mb-3">
+        <label asp-for="TipoAlertaId" class="fw-bold text-secondary"></label>
+        <select asp-for="TipoAlertaId" class="form-control" asp-items="ViewBag.TipoAlertaId">
+            <option value="">Selecione um tipo de alerta...</option>
+        </select>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Mensagem"></label>
+    <div class="form-group mb-3">
+        <label asp-for="Mensagem" class="fw-bold text-secondary"></label>
         <input asp-for="Mensagem" class="form-control" />
         <span asp-validation-for="Mensagem" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="ClienteId"></label>
-        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+    <div class="form-group mb-3">
+        <label asp-for="ClienteId" class="fw-bold text-secondary"></label>
+        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+            <option value="">Selecione um cliente...</option>
+        </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <button type="submit" class="btn fw-bold" style="background-color:#00b56a; color:white;">Salvar Alterações</button>
+    <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
 
 </form>
 

@@ -1,28 +1,29 @@
 ﻿@model MapaTriStackdb.Models.AlertaEquipamento
 
-<h2>Detalhes do Alerta</h2>
+<h2 class="text-dark fw-bold">Detalhes do Alerta</h2>
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
-<div>
-    <h4>Alerta</h4>
-    <hr />
+<div class="mb-4">
+    <h4 class="text-secondary fw-bold">Alerta</h4>
+    <hr style="border-color: rgba(0,0,0,0.1);" />
 
     <dl class="row">
-        <dt class="col-sm-3">Equipamento</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Equipamento</dt>
         <dd class="col-sm-9">@Model.Equipamento?.Descricao</dd>
 
-        <dt class="col-sm-3">Tipo de Alerta</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Tipo de Alerta</dt>
         <dd class="col-sm-9">@Model.TipoAlerta?.Descricao</dd>
 
-        <dt class="col-sm-3">Mensagem</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Mensagem</dt>
         <dd class="col-sm-9">@Model.Mensagem</dd>
 
-        <dt class="col-sm-3">Data</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Data</dt>
         <dd class="col-sm-9">@Model.DataAlerta.ToString("dd/MM/yyyy HH:mm")</dd>
 
-        <dt class="col-sm-3">Cliente</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Cliente</dt>
         <dd class="col-sm-9">@Model.Cliente?.Nome</dd>
     </dl>
 </div>
 
-<a asp-action="Edit" asp-route-id="@Model.AlertaEquipamentoId" class="btn btn-warning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Voltar</a>
+<a asp-action="Edit" asp-route-id="@Model.AlertaEquipamentoId" class="btn fw-bold" style="background-color:#00b56a; color:white;">Editar</a>
+<a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
