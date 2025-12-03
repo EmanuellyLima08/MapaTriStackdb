@@ -4,55 +4,46 @@
     ViewData["Title"] = "Cadastrar Equipamento para Usuário";
 }
 
-<h1>Cadastrar Equipamento</h1>
+<h2 style="color:#4CB917;" class="fw-bold">Cadastrar Equipamento</h2>
 
-<h4>EquipamentoCliente</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create" method="post">
-            @Html.AntiForgeryToken()
+<div class="card p-4 mt-3">
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="alerta-critico mb-3"></div>
 
-            <!-- Dropdown de Equipamentos -->
-            <div class="form-group">
-                <label asp-for="EquipamentoId" class="control-label"></label>
-                <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId">
-                    <option value="">-- Selecione um Equipamento --</option>
-                </select>
-                <span asp-validation-for="EquipamentoId" class="text-danger"></span>
-            </div>
+        <!-- Dropdown de Equipamentos -->
+        <div class="form-group mb-3">
+            <label asp-for="EquipamentoId" class="fw-bold" style="color:#4CB917;"></label>
+            <select asp-for="EquipamentoId" class="form-control" style="border:1px solid #4CB917;" asp-items="ViewBag.EquipamentoId">
+                <option value="">-- Selecione um Equipamento --</option>
+            </select>
+            <span asp-validation-for="EquipamentoId" class="alerta-critico"></span>
+        </div>
 
-            <!-- Dropdown de Usuários -->
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
-                    <option value="">-- Selecione um Usuário --</option>
-                </select>
-                <span asp-validation-for="ClienteId" class="text-danger"></span>
-            </div>
+        <!-- Dropdown de Usuários -->
+        <div class="form-group mb-3">
+            <label asp-for="ClienteId" class="fw-bold" style="color:#4CB917;"></label>
+            <select asp-for="ClienteId" class="form-control" style="border:1px solid #4CB917;" asp-items="ViewBag.ClienteId">
+                <option value="">-- Selecione um Usuário --</option>
+            </select>
+            <span asp-validation-for="ClienteId" class="alerta-critico"></span>
+        </div>
 
-            <!-- Data da Compra -->
-            <div class="form-group">
-                <label asp-for="DataCompra" class="control-label"></label>
-                <input asp-for="DataCompra" type="date" class="form-control" />
-                <span asp-validation-for="DataCompra" class="text-danger"></span>
-            </div>
+        <!-- Data da Compra -->
+        <div class="form-group mb-4">
+            <label asp-for="DataCompra" class="fw-bold" style="color:#4CB917;"></label>
+            <input asp-for="DataCompra" type="date" class="form-control" style="border:1px solid #4CB917;" />
+            <span asp-validation-for="DataCompra" class="alerta-critico"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Voltar para a lista</a>
+        <div class="form-group d-flex">
+            <button type="submit" class="btn fw-bold me-2" style="background-color:#4CB917; color:#ffffff;">Salvar</button>
+            <a asp-action="Index" class="btn fw-bold" style="background-color:#00b56a; color:#ffffff;">Voltar</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

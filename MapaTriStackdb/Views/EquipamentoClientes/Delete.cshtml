@@ -1,39 +1,30 @@
 ﻿@model MapaTriStackdb.Models.EquipamentoCliente
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Excluir Equipamento";
 }
 
-<h1>Delete</h1>
+<h2 style="color:#4CB917;" class="fw-bold">Excluir Equipamento</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>EquipamentoCliente</h4>
-    <hr />
+<h4 style="color:#4CB917;" class="fw-bold">Tem certeza que deseja excluir este equipamento?</h4>
+
+<div class="card p-3 mb-3">
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipamento)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Equipamento.Descricao)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Cliente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.ClienteId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DataCompra)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DataCompra)
-        </dd>
-    </dl>
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Equipamento</dt>
+        <dd class="col-sm-9">@Model.Equipamento?.Descricao</dd>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="EquipamentoClienteId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Cliente</dt>
+        <dd class="col-sm-9">@Model.Cliente?.Nome</dd>
+
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Data da Compra</dt>
+        <dd class="col-sm-9">@Model.DataCompra.ToString("dd/MM/yyyy")</dd>
+    </dl>
 </div>
+
+<form asp-action="DeleteConfirmed">
+    <input type="hidden" asp-for="EquipamentoClienteId" />
+    <div class="d-flex">
+        <button type="submit" class="btn fw-bold me-2" style="background-color:#ff4d4d; color:#ffffff;">Excluir</button>
+        <a asp-action="Index" class="btn fw-bold" style="background-color:#00b56a; color:#ffffff;">Cancelar</a>
+    </div>
+</form>
