@@ -4,34 +4,34 @@
     ViewData["Title"] = "Detalhes do Cliente";
 }
 
-<h2>Detalhes do Cliente</h2>
+<h2 class="text-sucess fw-bold">Detalhes do Cliente</h2>
 
-<div class="card p-3">
+<div class="card p-3" style="border-color: rgba(0,0,0,0.1); box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
     <dl class="row">
-        <dt class="col-sm-3">ID</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">ID</dt>
         <dd class="col-sm-9">@Model.ClienteId</dd>
 
-        <dt class="col-sm-3">Nome</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Nome</dt>
         <dd class="col-sm-9">@Model.Nome</dd>
 
-        <dt class="col-sm-3">Email</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Email</dt>
         <dd class="col-sm-9">@Model.Email</dd>
 
-        <dt class="col-sm-3">Equipamentos</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Equipamentos</dt>
         <dd class="col-sm-9">@Model.Equipamentos?.Count ?? 0</dd>
 
-        <dt class="col-sm-3">Alertas</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Alertas</dt>
         <dd class="col-sm-9">@Model.Alertas?.Count ?? 0</dd>
 
-        <dt class="col-sm-3">Históricos</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Históricos</dt>
         <dd class="col-sm-9">@Model.Historicos?.Count ?? 0</dd>
 
-        <dt class="col-sm-3">Médias Gerais</dt>
+        <dt class="col-sm-3 text-secondary fw-bold">Médias Gerais</dt>
         <dd class="col-sm-9">@Model.MediasGerais?.Count ?? 0</dd>
     </dl>
 </div>
 
 <br />
 
-<a asp-action="Edit" asp-route-id="@Model.ClienteId" class="btn btn-warning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Voltar</a>
+<a asp-action="Edit" asp-route-id="@Model.ClienteId" class="btn fw-bold" style="background-color:#ffc107; color:white;">Editar</a>
+<a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
