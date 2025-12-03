@@ -4,89 +4,90 @@
     ViewData["Title"] = "Detalhes do Equipamento";
 }
 
-<h1>Detalhes do Equipamento</h1>
+<h1 class="text-success fw-bold">Detalhes do Equipamento</h1>
 
 <div>
-    <h4>Equipamento</h4>
-    <hr />
+    <h4 class="text-dark fw-bold">Equipamento</h4>
+    <hr style="border-color: rgba(0,0,0,0.2);" />
+
     <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Descricao)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Descricao)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Descricao)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Descricao)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Temperatura)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Temperatura)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Temperatura)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Temperatura) °C</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Ar)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Ar)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Ar)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Ar) %</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Agua)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Agua)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Agua)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Agua) %</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Latitude)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Latitude)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Latitude)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Latitude)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Longitude)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Longitude)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Longitude)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Longitude)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Vento)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Vento)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Vento)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Vento) km/h</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Luz)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Luz)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Luz)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Luz) lux</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Solo)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Solo)</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">@Html.DisplayNameFor(model => model.Solo)</dt>
+        <dd class="col-sm-10 text-dark">@Html.DisplayFor(model => model.Solo) %</dd>
 
-        <dt class="col-sm-2">Cliente</dt>
-        <dd class="col-sm-10">@Model.Cliente?.Nome</dd>
+        <dt class="col-sm-2 text-secondary fw-bold">Cliente</dt>
+        <dd class="col-sm-10 text-dark">@Model.Cliente?.Nome ?? "Sem Cliente"</dd>
     </dl>
 </div>
 
-<hr />
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
-<h4>Médias Gerais</h4>
+<h4 class="text-dark fw-bold">Médias Gerais</h4>
 @if (Model.MediasGerais != null && Model.MediasGerais.Any())
 {
     var media = Model.MediasGerais.FirstOrDefault(m => m.ClienteId == Model.ClienteId);
     if (media != null)
     {
         <dl class="row">
-            <dt class="col-sm-2">Média de Temperatura</dt>
-            <dd class="col-sm-10">@media.MediaTemperatura °C</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Temperatura</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaTemperatura °C</dd>
 
-            <dt class="col-sm-2">Média de Umidade do Ar</dt>
-            <dd class="col-sm-10">@media.MediaAr %</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Umidade do Ar</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaAr %</dd>
 
-            <dt class="col-sm-2">Média de Água</dt>
-            <dd class="col-sm-10">@media.MediaAgua %</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Água</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaAgua %</dd>
 
-            <dt class="col-sm-2">Média de Vento</dt>
-            <dd class="col-sm-10">@media.MediaVento km/h</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Vento</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaVento km/h</dd>
 
-            <dt class="col-sm-2">Média de Luminosidade</dt>
-            <dd class="col-sm-10">@media.MediaLuz lux</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Luminosidade</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaLuz lux</dd>
 
-            <dt class="col-sm-2">Média de Solo</dt>
-            <dd class="col-sm-10">@media.MediaSolo %</dd>
+            <dt class="col-sm-2 text-secondary fw-bold">Média de Solo</dt>
+            <dd class="col-sm-10 text-dark">@media.MediaSolo %</dd>
         </dl>
     }
     else
     {
-        <p>Não há médias registradas para este equipamento.</p>
+        <p class="text-dark">Não há médias registradas para este equipamento.</p>
     }
 }
 else
 {
-    <p>Não há médias registradas para este equipamento.</p>
+    <p class="text-dark">Não há médias registradas para este equipamento.</p>
 }
 
-<hr />
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
-<h4>Histórico de Leituras</h4>
+<h4 class="text-dark fw-bold">Histórico de Leituras</h4>
 @if (Model.Historicos != null && Model.Historicos.Any())
 {
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-striped" style="border: 1px solid rgba(0,0,0,0.1);">
+        <thead style="background-color: #4CB917; color: white;">
             <tr>
                 <th>Data</th>
                 <th>Temperatura</th>
@@ -100,7 +101,7 @@ else
         <tbody>
             @foreach (var h in Model.Historicos.OrderByDescending(h => h.DataLeitura))
             {
-                <tr>
+                <tr style="background-color: #f5f5f5; color: #000;">
                     <td>@h.DataLeitura?.ToString("dd/MM/yyyy HH:mm")</td>
                     <td>@h.Temperatura</td>
                     <td>@h.Ar</td>
@@ -115,12 +116,12 @@ else
 }
 else
 {
-    <p>Não há registros de histórico para este equipamento.</p>
+    <p class="text-dark">Não há registros de histórico para este equipamento.</p>
 }
 
-<hr />
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.EquipamentoId" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Voltar à Lista</a>
+<div class="mb-3">
+    <a asp-action="Edit" asp-route-id="@Model?.EquipamentoId" class="btn fw-bold" style="background-color: #00b56a; color: white;">Editar</a>
+    <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar à Lista</a>
 </div>
