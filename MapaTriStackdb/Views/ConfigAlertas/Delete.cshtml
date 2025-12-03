@@ -4,27 +4,27 @@
     ViewData["Title"] = "Excluir Configuração";
 }
 
-<h2>Excluir Configuração</h2>
+<h2 style="color:#4CB917;" class="fw-bold">Excluir Configuração</h2>
 
-<h3>Tem certeza que deseja excluir esta configuração?</h3>
+<h3 style="color:#4CB917;" class="fw-bold">Tem certeza que deseja excluir esta configuração?</h3>
 
-<div>
-    <h4>@Model.Nome</h4>
-    <hr />
+<div class="card p-3 mb-3">
+    <h4 style="color:#00b56a;" class="fw-bold">@Model.Nome</h4>
+    <hr style="border-color:#4CB917;" />
 
     <dl class="row">
-
-        <dt class="col-sm-3">Tipo</dt>
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Tipo</dt>
         <dd class="col-sm-9">@Model.TipoAlerta?.Descricao</dd>
 
-        <dt class="col-sm-3">Cliente</dt>
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Cliente</dt>
         <dd class="col-sm-9">@Model.Cliente?.Nome</dd>
-
     </dl>
 </div>
 
-<form asp-action="DeleteConfirmed">
-    <input type="hidden" asp-for="ConfigAlertaId" />
-    <button type="submit" class="btn btn-danger">Excluir</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+<div class="d-flex">
+    <form asp-action="DeleteConfirmed">
+        <input type="hidden" asp-for="ConfigAlertaId" />
+        <button type="submit" class="btn fw-bold" style="background-color:#ff4d4d; color:#ffffff;">Excluir</button>
+    </form>
+    <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#00b56a; color:#ffffff;">Cancelar</a>
+</div>
