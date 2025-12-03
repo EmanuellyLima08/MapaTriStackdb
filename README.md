@@ -75,11 +75,11 @@ Siga os passos abaixo para configurar o projeto em sua máquina local:
 git clone https://github.com/italonensai/mapa-vivo-campo-inteligente-mvc
 cd mapa-vivo-campo-inteligente-mvc
 dotnet restore
+dotnet ef database update
+dotnet run
 
 ## 🛠️ **Desenvolvido por:**
 
 - Emanuelly Vitoria dos Santos Lima
 - Ítalo Francesco
 - Rayssa Nanclares da Silveira
-dotnet ef database update
-dotnet run
