@@ -20,11 +20,6 @@ Conectando o campo à tecnologia para uma agricultura mais eficiente e sustentá
 
 ---
 
-## 📸 **Preview**  
-Adicione aqui screenshots do dashboard e telas de gestão do MVC  
-
----
-
 ## 📑 **Índice**  
 - **Visão Geral**  
 - **Por que usar o Mapa Vivo do Campo Inteligente – MVC?**  
