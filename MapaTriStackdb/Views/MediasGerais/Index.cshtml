@@ -4,23 +4,27 @@
     ViewData["Title"] = "Médias Gerais";
 }
 
-<h2>Médias Gerais</h2>
+<h2 class="mb-4">Médias Gerais</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    <div class="alerta-informativo mb-3">@TempData["SuccessMessage"]</div>
 }
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    <div class="alerta-critico mb-3">@TempData["ErrorMessage"]</div>
 }
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Calcular Nova Média</a>
+    <a asp-action="Create"
+       style="background:#4CB917; color:white; padding:8px 15px; border-radius:6px; font-weight:600; text-decoration:none;"
+       class="mb-3">
+        Calcular Nova Média
+    </a>
 </p>
 
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
+<table class="table tabela-paleta">
+    <thead>
         <tr>
             <th>Equipamento</th>
             <th>Cliente</th>
@@ -46,8 +50,17 @@
                 <td>@media.MediaVento</td>
                 <td>@media.MediaLuz</td>
                 <td>
-                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@media.MediaGeralId">Detalhes</a>
-                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@media.MediaGeralId">Excluir</a>
+                    <a asp-action="Details" asp-route-id="@media.MediaGeralId"
+                       style="background:#00b56a; color:white; padding:6px 10px; border-radius:6px; text-decoration:none; font-weight:600;"
+                       class="btn-sm">
+                        Detalhes
+                    </a>
+
+                    <a asp-action="Delete" asp-route-id="@media.MediaGeralId"
+                       style="background:#ff4d4d; color:white; padding:6px 10px; border-radius:6px; text-decoration:none; font-weight:600; margin-left:4px;"
+                       class="btn-sm">
+                        Excluir
+                    </a>
                 </td>
             </tr>
         }

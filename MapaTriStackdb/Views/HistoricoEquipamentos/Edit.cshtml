@@ -5,53 +5,83 @@
     ViewData["Title"] = isEdit ? "Editar Histórico" : "Novo Histórico";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="mb-3">@ViewData["Title"]</h2>
 
-<form asp-action="@(isEdit ? "Edit" : "Create")" method="post">
-    <div class="form-group">
-        <label asp-for="EquipamentoId"></label>
-        <select asp-for="EquipamentoId" class="form-control" asp-items="ViewBag.EquipamentoId"></select>
+<form asp-action="@(isEdit ? "Edit" : "Create")" method="post"
+      style="background:#ffffff; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.2); padding:20px; max-width:600px;">
+
+    <!-- Equipamento -->
+    <div class="form-group mb-3">
+        <label asp-for="EquipamentoId" style="font-weight:600;"></label>
+        <select asp-for="EquipamentoId" asp-items="ViewBag.EquipamentoId"
+                class="form-control"
+                style="border:1px solid #4CB917; padding:8px; border-radius:6px;">
+        </select>
         <span asp-validation-for="EquipamentoId" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="ClienteId"></label>
-        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+    <!-- Cliente -->
+    <div class="form-group mb-3">
+        <label asp-for="ClienteId" style="font-weight:600;"></label>
+        <select asp-for="ClienteId" asp-items="ViewBag.ClienteId"
+                class="form-control"
+                style="border:1px solid #4CB917; padding:8px; border-radius:6px;">
+        </select>
         <span asp-validation-for="ClienteId" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Descricao"></label>
-        <input asp-for="Descricao" class="form-control" />
+    <!-- Descrição -->
+    <div class="form-group mb-3">
+        <label asp-for="Descricao" style="font-weight:600;"></label>
+        <input asp-for="Descricao" class="form-control"
+               style="border:1px solid #4CB917; padding:8px; border-radius:6px;" />
         <span asp-validation-for="Descricao" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Temperatura"></label>
-        <input asp-for="Temperatura" class="form-control" />
+    <!-- Temperatura -->
+    <div class="form-group mb-3">
+        <label asp-for="Temperatura" style="font-weight:600;"></label>
+        <input asp-for="Temperatura" class="form-control"
+               style="border:1px solid #4CB917; padding:8px; border-radius:6px;" />
         <span asp-validation-for="Temperatura" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Ar"></label>
-        <input asp-for="Ar" class="form-control" />
+    <!-- Ar -->
+    <div class="form-group mb-3">
+        <label asp-for="Ar" style="font-weight:600;"></label>
+        <input asp-for="Ar" class="form-control"
+               style="border:1px solid #4CB917; padding:8px; border-radius:6px;" />
         <span asp-validation-for="Ar" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Agua"></label>
-        <input asp-for="Agua" class="form-control" />
+    <!-- Água -->
+    <div class="form-group mb-3">
+        <label asp-for="Agua" style="font-weight:600;"></label>
+        <input asp-for="Agua" class="form-control"
+               style="border:1px solid #4CB917; padding:8px; border-radius:6px;" />
         <span asp-validation-for="Agua" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="DataLeitura"></label>
-        <input asp-for="DataLeitura" type="date" class="form-control" />
+    <!-- Data -->
+    <div class="form-group mb-3">
+        <label asp-for="DataLeitura" style="font-weight:600;"></label>
+        <input asp-for="DataLeitura" type="date" class="form-control"
+               style="border:1px solid #4CB917; padding:8px; border-radius:6px;" />
         <span asp-validation-for="DataLeitura" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">@(isEdit ? "Atualizar" : "Criar")</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <!-- Botões -->
+    <button type="submit"
+            style="background:#4CB917; color:white; border:none; padding:10px 16px;
+                   border-radius:6px; font-weight:600; cursor:pointer;">
+        @(isEdit ? "Atualizar" : "Criar")
+    </button>
+
+    <a asp-action="Index"
+       style="background:#00b56a; color:white; padding:10px 16px; border-radius:6px;
+              font-weight:600; text-decoration:none; margin-left:8px;">
+        Cancelar
+    </a>
 </form>
 
 @section Scripts {

@@ -1,27 +1,40 @@
 ﻿@model MapaTriStackdb.Models.TipoAlerta
 
 @{
-    ViewData["Title"] = "Create Tipo de Alerta";
+    ViewData["Title"] = "Criar Tipo de Alerta";
 }
 
-<h1>Criar Tipo de Alerta</h1>
+<h2 class="mb-3">@ViewData["Title"]</h2>
 
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
+    <div class="col-md-5">
+
+        <form asp-action="Create" method="post" style="background:#ffffff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group mb-3">
-                <label asp-for="Descricao" class="control-label"></label>
+                <label asp-for="Descricao" class="control-label" style="font-weight:600;"></label>
                 <input asp-for="Descricao" class="form-control" placeholder="Ex: Leve, Moderado, Crítico" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Criar" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Voltar</a>
+            <div class="form-group mt-3" style="display:flex; gap:10px;">
+
+                <!-- Botão Criar estilo verde padrão -->
+                <button type="submit"
+                        style="background:#4CB917; color:white; padding:8px 14px;
+                               border:none; border-radius:6px; font-weight:600;">
+                    Criar
+                </button>
+
+                <!-- Botão Voltar estilo cinza -->
+                <a asp-action="Index"
+                   style="background:#6c757d; color:white; padding:8px 14px;
+                          border-radius:6px; font-weight:600; text-decoration:none;">
+                    Voltar
+                </a>
             </div>
         </form>
 
@@ -38,6 +51,7 @@
                 @TempData["ErrorMessage"]
             </div>
         }
+
     </div>
 </div>
 

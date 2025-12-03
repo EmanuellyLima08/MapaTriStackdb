@@ -4,34 +4,40 @@
     ViewData["Title"] = "Detalhes do Histórico";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="mb-3">@ViewData["Title"]</h2>
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">Equipamento</dt>
-        <dd class="col-sm-10">@Model.Equipamento?.Descricao</dd>
+<div class="card" style="border: none; border-radius: 8px;
+     box-shadow: 0 2px 4px rgba(0,0,0,0.2); overflow:hidden; max-width:650px;">
 
-        <dt class="col-sm-2">Cliente</dt>
-        <dd class="col-sm-10">@Model.Cliente?.Nome</dd>
+    <div class="card-header"
+         style="background:#4CB917; color:white; font-weight:600; font-size:1.2rem;">
+        Histórico do Equipamento
+    </div>
 
-        <dt class="col-sm-2">Descrição</dt>
-        <dd class="col-sm-10">@Model.Descricao</dd>
+    <div class="card-body" style="padding:20px;">
 
-        <dt class="col-sm-2">Temperatura (°C)</dt>
-        <dd class="col-sm-10">@Model.Temperatura</dd>
+        <p><strong>Equipamento:</strong> @Model.Equipamento?.Descricao</p>
+        <p><strong>Cliente:</strong> @Model.Cliente?.Nome</p>
+        <p><strong>Descrição:</strong> @Model.Descricao</p>
+        <p><strong>Temperatura (°C):</strong> @Model.Temperatura</p>
+        <p><strong>Umidade do Ar (%):</strong> @Model.Ar</p>
+        <p><strong>Nível de Água (%):</strong> @Model.Agua</p>
+        <p><strong>Data da Leitura:</strong> @Model.DataLeitura?.ToString("dd/MM/yyyy")</p>
 
-        <dt class="col-sm-2">Umidade do Ar (%)</dt>
-        <dd class="col-sm-10">@Model.Ar</dd>
+    </div>
 
-        <dt class="col-sm-2">Nível de Água (%)</dt>
-        <dd class="col-sm-10">@Model.Agua</dd>
+    <div class="card-footer" style="background:#f5f5f5; padding:12px;">
+        <a asp-action="Edit" asp-route-id="@Model.HistoricoEquipamentoId"
+           style="background:#ffc107; color:#000; padding:8px 14px;
+                  border-radius:6px; font-weight:600; text-decoration:none; margin-right:8px;">
+            Editar
+        </a>
 
-        <dt class="col-sm-2">Data da Leitura</dt>
-        <dd class="col-sm-10">@Model.DataLeitura?.ToString("dd/MM/yyyy")</dd>
-    </dl>
+        <a asp-action="Index"
+           style="background:#00b56a; color:white; padding:8px 14px; border-radius:6px;
+                  font-weight:600; text-decoration:none;">
+            Voltar
+        </a>
+    </div>
+
 </div>
-
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.HistoricoEquipamentoId" class="btn btn-warning">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-</p>

@@ -1,35 +1,53 @@
 ﻿@model IEnumerable<MapaTriStackdb.Models.TipoAlerta>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tipos de Alerta";
 }
 
-<h1>Index</h1>
+<h2 class="mb-4">@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create"
+       style="background:#4CB917; color:white; padding:8px 14px; border-radius:6px;
+              font-weight:600; text-decoration:none;">
+        Novo Tipo de Alerta
+    </a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th></th>
+            <th>Descrição</th>
+            <th style="width:180px;">Ações</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TipoAlertaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TipoAlertaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TipoAlertaId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Descricao</td>
+                <td style="display:flex; gap:6px;">
+
+                    <a asp-action="Edit" asp-route-id="@item.TipoAlertaId"
+                       style="background:#ffc107; color:black; padding:6px 10px;
+                              border-radius:6px; font-weight:600; text-decoration:none;">
+                        Editar
+                    </a>
+
+                    <a asp-action="Details" asp-route-id="@item.TipoAlertaId"
+                       style="background:#00b56a; color:white; padding:6px 10px;
+                              border-radius:6px; font-weight:600; text-decoration:none;">
+                        Detalhes
+                    </a>
+
+                    <a asp-action="Delete" asp-route-id="@item.TipoAlertaId"
+                       style="background:#ff4d4d; color:white; padding:6px 10px;
+                              border-radius:6px; font-weight:600; text-decoration:none;">
+                        Excluir
+                    </a>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

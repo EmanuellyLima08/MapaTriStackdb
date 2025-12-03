@@ -1,24 +1,74 @@
 ﻿@model MapaTriStackdb.Models.TipoAlerta
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Details</h1>
+<h2 class="mb-3">@ViewData["Title"]</h2>
 
-<div>
-    <h4>TipoAlerta</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.TipoAlertaId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div style="
+    background:#ffffff;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    max-width:800px;
+    padding:0;
+">
+
+    <!-- CABEÇALHO VERDE IGUAL AO HISTÓRICO -->
+    <div style="
+        background:#4CB917;
+        padding:15px;
+        border-radius:10px 10px 0 0;
+        color:white;
+        font-size:22px;
+        font-weight:700;
+    ">
+        Tipo de Alerta
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div style="padding:25px; font-size:18px;">
+
+        <p>
+            <strong>@Html.DisplayNameFor(m => m.Descricao):</strong>
+            @Html.DisplayFor(m => m.Descricao)
+        </p>
+
+    </div>
+
+    <!-- RODAPÉ / BOTÕES IGUAL AO HISTÓRICO -->
+    <div style="
+        background:#f4f4f4;
+        padding:12px;
+        border-radius:0 0 10px 10px;
+        display:flex;
+        gap:10px;
+    ">
+
+        <a asp-action="Edit" asp-route-id="@Model?.TipoAlertaId"
+           style="
+                background:#f1c40f;
+                padding:8px 16px;
+                border-radius:6px;
+                font-weight:600;
+                color:#000;
+                text-decoration:none;
+           ">
+            Editar
+        </a>
+
+        <a asp-action="Index"
+           style="
+                background:#4CB917;
+                padding:8px 16px;
+                border-radius:6px;
+                font-weight:600;
+                color:white;
+                text-decoration:none;
+           ">
+            Voltar
+        </a>
+
+    </div>
+
 </div>

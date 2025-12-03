@@ -4,24 +4,48 @@
     ViewData["Title"] = "Excluir Histórico";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="mb-3">@ViewData["Title"]</h2>
 
-<h4>Tem certeza que deseja excluir este registro?</h4>
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">Equipamento</dt>
-        <dd class="col-sm-10">@Model.Equipamento?.Descricao</dd>
-
-        <dt class="col-sm-2">Cliente</dt>
-        <dd class="col-sm-10">@Model.Cliente?.Nome</dd>
-
-        <dt class="col-sm-2">Data da Leitura</dt>
-        <dd class="col-sm-10">@Model.DataLeitura?.ToString("dd/MM/yyyy")</dd>
-    </dl>
+<div class="alerta-critico mb-3"
+     style="background:#ff4d4d; color:white; padding:10px 15px;
+            border-radius:6px; font-weight:600;">
+    Tem certeza que deseja excluir este registro?
 </div>
 
-<form asp-action="Delete">
-    <input type="hidden" asp-for="HistoricoEquipamentoId" />
-    <button type="submit" class="btn btn-danger">Excluir</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+<div class="card"
+     style="border:none; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.2);
+            overflow:hidden; max-width:650px;">
+
+    <div class="card-header"
+         style="background:#4CB917; color:white; font-weight:600; font-size:1.2rem;">
+        Informações do Histórico
+    </div>
+
+    <div class="card-body" style="padding:20px;">
+
+        <p><strong>Equipamento:</strong> @Model.Equipamento?.Descricao</p>
+        <p><strong>Cliente:</strong> @Model.Cliente?.Nome</p>
+        <p><strong>Data da Leitura:</strong> @Model.DataLeitura?.ToString("dd/MM/yyyy")</p>
+
+    </div>
+
+    <div class="card-footer" style="background:#f5f5f5; padding:12px;">
+
+        <form asp-action="Delete" method="post" style="display:inline;">
+            <input type="hidden" asp-for="HistoricoEquipamentoId" />
+
+            <button type="submit"
+                    style="background:#ff4d4d; color:white; padding:8px 14px; border-radius:6px;
+                       font-weight:600; border:none; cursor:pointer;">
+                Excluir
+            </button>
+        </form>
+
+        <a asp-action="Index"
+           style="background:#00b56a; color:white; padding:8px 14px; border-radius:6px;
+                  font-weight:600; text-decoration:none; margin-left:8px;">
+            Cancelar
+        </a>
+
+    </div>
+</div>
