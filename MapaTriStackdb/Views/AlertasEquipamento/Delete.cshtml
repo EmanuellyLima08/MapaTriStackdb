@@ -1,27 +1,28 @@
 ﻿@model MapaTriStackdb.Models.AlertaEquipamento
 
-<h2>Excluir Alerta</h2>
+<h2 class="text-dark fw-bold">Excluir Alerta</h2>
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
-<h4>Tem certeza que deseja excluir este alerta?</h4>
+<h4 class="text-secondary">Tem certeza que deseja excluir este alerta?</h4>
 
-<div>
+<div class="mb-4">
     <dl class="row">
-        <dt class="col-sm-3">Equipamento</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Equipamento</dt>
         <dd class="col-sm-9">@Model.Equipamento?.Descricao</dd>
 
-        <dt class="col-sm-3">Tipo de Alerta</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Tipo de Alerta</dt>
         <dd class="col-sm-9">@Model.TipoAlerta?.Descricao</dd>
 
-        <dt class="col-sm-3">Mensagem</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Mensagem</dt>
         <dd class="col-sm-9">@Model.Mensagem</dd>
 
-        <dt class="col-sm-3">Cliente</dt>
+        <dt class="col-sm-3 fw-bold text-secondary">Cliente</dt>
         <dd class="col-sm-9">@Model.Cliente?.Nome</dd>
     </dl>
 </div>
 
 <form asp-action="Delete">
     <input type="hidden" asp-for="AlertaEquipamentoId" />
-    <button type="submit" class="btn btn-danger">Excluir</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn fw-bold" style="background-color:#ff4d4d; color:white;">Excluir</button>
+    <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Cancelar</a>
 </form>

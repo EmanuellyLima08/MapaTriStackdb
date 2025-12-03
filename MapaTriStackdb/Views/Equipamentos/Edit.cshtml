@@ -4,71 +4,84 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1 class="text-success fw-bold">Editar Equipamento</h1>
 
-<h4>Equipamento</h4>
-<hr />
+<h4 class="text-dark">Equipamento</h4>
+<hr style="border-color: rgba(0,0,0,0.2);" />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="EquipamentoId" />
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+
+            <!-- Inputs estilizados com paleta -->
+            <div class="form-group mb-3">
+                <label asp-for="Descricao" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Descricao" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5; color: #000;" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Temperatura" class="control-label"></label>
-                <input asp-for="Temperatura" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Temperatura" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Temperatura" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Temperatura" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Ar" class="control-label"></label>
-                <input asp-for="Ar" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Ar" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Ar" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Ar" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Agua" class="control-label"></label>
-                <input asp-for="Agua" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Agua" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Agua" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Agua" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Latitude" class="control-label"></label>
-                <input asp-for="Latitude" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Latitude" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Latitude" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Latitude" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Longitude" class="control-label"></label>
-                <input asp-for="Longitude" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Longitude" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Longitude" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Longitude" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Vento" class="control-label"></label>
-                <input asp-for="Vento" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Vento" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Vento" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Vento" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Luz" class="control-label"></label>
-                <input asp-for="Luz" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Luz" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Luz" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Luz" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Solo" class="control-label"></label>
-                <input asp-for="Solo" class="form-control" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Solo" class="form-label fw-bold text-secondary"></label>
+                <input asp-for="Solo" class="form-control" style="border-color: rgba(0,0,0,0.1); background-color: #f5f5f5;" />
                 <span asp-validation-for="Solo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Salvar"
+                       class="btn fw-bold"
+                       style="background-color: #00b56a; color: white;" />
+                <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

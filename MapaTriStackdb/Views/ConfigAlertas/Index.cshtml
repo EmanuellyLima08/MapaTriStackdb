@@ -4,49 +4,64 @@
     ViewData["Title"] = "Configurações de Alerta";
 }
 
-<h2>Configurações de Alerta</h2>
+<h2 style="color:#4CB917;" class="fw-bold">Configurações de Alerta</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Criar Novo</a>
-</p>
+<div class="mb-3">
+    <a asp-action="Create" class="btn fw-bold" style="background-color:#4CB917; color:#ffffff;">Criar Novo</a>
+</div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Tipo de Alerta</th>
-            <th>Cliente</th>
-            <th>Temperatura</th>
-            <th>Umidade Ar</th>
-            <th>Vento</th>
-            <th>Água</th>
-            <th>Solo</th>
-            <th>Nível</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="card p-4">
+    <table class="table table-bordered table-striped">
+        <thead style="background-color:#4CB917; color:#ffffff;">
             <tr>
-                <td>@item.Nome</td>
-                <td>@item.TipoAlerta?.Descricao</td> <!-- CORRIGIDO -->
-                <td>@item.Cliente?.Nome</td>
-
-                <td>@item.TemperaturaLimite</td>
-                <td>@item.ArLimite</td>
-                <td>@item.VentoLimite</td>
-                <td>@item.AguaLimite</td>
-                <td>@item.SoloLimite</td>
-
-                <td>@item.Nivel</td>
-
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ConfigAlertaId">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.ConfigAlertaId">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ConfigAlertaId">Excluir</a>
-                </td>
+                <th>Nome</th>
+                <th>Tipo de Alerta</th>
+                <th>Cliente</th>
+                <th>Temperatura</th>
+                <th>Umidade Ar</th>
+                <th>Vento</th>
+                <th>Água</th>
+                <th>Solo</th>
+                <th>Nível</th>
+                <th>Ações</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@item.TipoAlerta?.Descricao</td>
+                    <td>@item.Cliente?.Nome</td>
+
+                    <td>@item.TemperaturaLimite</td>
+                    <td>@item.ArLimite</td>
+                    <td>@item.VentoLimite</td>
+                    <td>@item.AguaLimite</td>
+                    <td>@item.SoloLimite</td>
+
+                    <td>
+                        @if (item.Nivel == "Leve")
+                        {
+                            <span class="alerta-informativo">@item.Nivel</span>
+                        }
+                        else if (item.Nivel == "Moderado")
+                        {
+                            <span class="alerta-moderado">@item.Nivel</span>
+                        }
+                        else if (item.Nivel == "Crítico")
+                        {
+                            <span class="alerta-critico">@item.Nivel</span>
+                        }
+                    </td>
+
+                    <td class="d-flex flex-wrap gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.ConfigAlertaId" class="btn fw-bold" style="background-color:#4CB917; color:#ffffff;">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.ConfigAlertaId" class="btn fw-bold" style="background-color:#00b56a; color:#ffffff;">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.ConfigAlertaId" class="btn fw-bold" style="background-color:#ff4d4d; color:#ffffff;">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

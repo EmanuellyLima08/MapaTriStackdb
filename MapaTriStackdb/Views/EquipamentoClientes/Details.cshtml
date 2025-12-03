@@ -1,36 +1,25 @@
 ﻿@model MapaTriStackdb.Models.EquipamentoCliente
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Equipamento";
 }
 
-<h1>Details</h1>
+<h2 style="color:#4CB917;" class="fw-bold">Detalhes do Equipamento</h2>
 
-<div>
-    <h4>EquipamentoCliente</h4>
-    <hr />
+<div class="card p-3 mb-3">
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipamento)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Equipamento.Descricao)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Cliente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.ClienteId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DataCompra)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DataCompra)
-        </dd>
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Equipamento</dt>
+        <dd class="col-sm-9">@Model.Equipamento?.Descricao</dd>
+
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Cliente</dt>
+        <dd class="col-sm-9">@Model.Cliente?.Nome</dd>
+
+        <dt class="col-sm-3 fw-bold" style="color:#4CB917;">Data da Compra</dt>
+        <dd class="col-sm-9">@Model.DataCompra.ToString("dd/MM/yyyy")</dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.EquipamentoClienteId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="d-flex">
+    <a asp-action="Edit" asp-route-id="@Model.EquipamentoClienteId" class="btn fw-bold me-2" style="background-color:#4CB917; color:#ffffff;">Editar</a>
+    <a asp-action="Index" class="btn fw-bold" style="background-color:#00b56a; color:#ffffff;">Voltar</a>
 </div>

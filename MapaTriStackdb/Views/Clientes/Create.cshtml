@@ -4,24 +4,25 @@
     ViewData["Title"] = "Cadastrar Cliente";
 }
 
-<h2>Cadastrar Cliente</h2>
+<h2 class="text-sucess fw-bold">Cadastrar Cliente</h2>
 
 <form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Nome"></label>
-        <input asp-for="Nome" class="form-control" />
+    <div class="form-group mb-3">
+        <label asp-for="Nome" class="fw-bold text-secondary"></label>
+        <input asp-for="Nome" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
         <span asp-validation-for="Nome" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
+    <div class="form-group mb-3">
+        <label asp-for="Email" class="fw-bold text-secondary"></label>
+        <input asp-for="Email" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
-    <br />
-    <button type="submit" class="btn btn-success">Salvar</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <div class="form-group mt-3">
+        <button type="submit" class="btn fw-bold" style="background-color: #00b56a; color:white;">Salvar</button>
+        <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Voltar</a>
+    </div>
 </form>
 
 @section Scripts {

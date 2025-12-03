@@ -4,19 +4,18 @@
     ViewData["Title"] = "Excluir Cliente";
 }
 
-<h2>Excluir Cliente</h2>
+<h2 class="text-sucess fw-bold">Excluir Cliente</h2>
 
-<h4>Tem certeza de que deseja excluir este cliente?</h4>
+<h4 class="text-dark fw-bold">Tem certeza de que deseja excluir este cliente?</h4>
 
-<div class="card p-3 mt-3">
-    <p><strong>Nome:</strong> @Model.Nome</p>
-    <p><strong>Email:</strong> @Model.Email</p>
+<div class="card p-3 mt-3" style="border-color: rgba(0,0,0,0.1); box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+    <p><strong class="text-secondary">Nome:</strong> @Model.Nome</p>
+    <p><strong class="text-secondary">Email:</strong> @Model.Email</p>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="Delete" method="post" class="mt-3">
     <input type="hidden" asp-for="ClienteId" />
 
-    <br />
-    <button type="submit" class="btn btn-danger">Excluir</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn fw-bold" style="background-color:#ff4d4d; color:white;">Excluir</button>
+    <a asp-action="Index" class="btn fw-bold ms-2" style="background-color:#246816; color:white;">Cancelar</a>
 </form>

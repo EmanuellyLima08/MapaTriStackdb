@@ -4,10 +4,10 @@
     ViewData["Title"] = "Cadastrar Equipamento";
 }
 
-<h1>Cadastrar Equipamento</h1>
+<h1 class="text-success fw-bold">Cadastrar Equipamento</h1>
 
-<h4>Equipamento</h4>
-<hr />
+<h4 class="text-dark fw-bold">Equipamento</h4>
+<hr style="border-color: rgba(0,0,0,0.2);" />
 
 <div class="row">
     <div class="col-md-4">
@@ -15,78 +15,78 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <!-- CLIENTE SELECIONÁVEL -->
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+            <div class="form-group mb-3">
+                <label asp-for="ClienteId" class="fw-bold text-secondary"></label>
+                <select asp-for="ClienteId" class="form-control border" asp-items="ViewBag.ClienteId" style="border-color: rgba(0,0,0,0.1);">
                     <option value="">Selecione um cliente...</option>
                 </select>
                 <span asp-validation-for="ClienteId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Descricao" class="fw-bold text-secondary"></label>
+                <input asp-for="Descricao" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Temperatura" class="control-label"></label>
-                <input asp-for="Temperatura" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Temperatura" class="fw-bold text-secondary"></label>
+                <input asp-for="Temperatura" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Temperatura" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Ar" class="control-label"></label>
-                <input asp-for="Ar" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Ar" class="fw-bold text-secondary"></label>
+                <input asp-for="Ar" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Ar" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Agua" class="control-label"></label>
-                <input asp-for="Agua" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Agua" class="fw-bold text-secondary"></label>
+                <input asp-for="Agua" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Agua" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Latitude" class="control-label"></label>
-                <input asp-for="Latitude" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Latitude" class="fw-bold text-secondary"></label>
+                <input asp-for="Latitude" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Latitude" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Longitude" class="control-label"></label>
-                <input asp-for="Longitude" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Longitude" class="fw-bold text-secondary"></label>
+                <input asp-for="Longitude" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Longitude" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Vento" class="control-label"></label>
-                <input asp-for="Vento" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Vento" class="fw-bold text-secondary"></label>
+                <input asp-for="Vento" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Vento" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Luz" class="control-label"></label>
-                <input asp-for="Luz" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Luz" class="fw-bold text-secondary"></label>
+                <input asp-for="Luz" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Luz" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Solo" class="control-label"></label>
-                <input asp-for="Solo" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Solo" class="fw-bold text-secondary"></label>
+                <input asp-for="Solo" class="form-control border" style="border-color: rgba(0,0,0,0.1);" />
                 <span asp-validation-for="Solo" class="text-danger"></span>
             </div>
 
             <div class="form-group mt-3">
-                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                <input type="submit" value="Cadastrar"
+                       class="btn fw-bold"
+                       style="background-color: #00b56a; color:white;" />
+                <a asp-action="Index"
+                   class="btn fw-bold ms-2"
+                   style="background-color:#246816; color:white;">Voltar à Lista</a>
             </div>
-
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Voltar para a lista</a>
 </div>
 
 @section Scripts {
