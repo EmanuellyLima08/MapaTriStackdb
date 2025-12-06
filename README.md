@@ -78,3 +78,6 @@ dotnet run
 - Emanuelly Vitoria dos Santos Lima
 - Ítalo Francesco
 - Rayssa Nanclares da Silveira
+
+### ** Documentação **: ###
+[DOC TECNICA MVC - TRISTACK.pdf](https://github.com/user-attachments/files/23996865/DOC.TECNICA.MVC.-.TRISTACK.pdf)
