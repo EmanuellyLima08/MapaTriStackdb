@@ -66,7 +66,7 @@ Antes de iniciar, verifique se você possui:
 ## 🛠️ **Instalação**  
 Siga os passos abaixo para configurar o projeto em sua máquina local:  
 
-```bash
+
 git clone https://github.com/italonensai/mapa-vivo-campo-inteligente-mvc
 cd mapa-vivo-campo-inteligente-mvc
 dotnet restore
