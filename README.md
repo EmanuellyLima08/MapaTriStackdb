@@ -80,4 +80,5 @@ dotnet run
 - Rayssa Nanclares da Silveira
 
 **Documentação:**
+
 [DOC TECNICA MVC - TRISTACK.pdf](https://github.com/user-attachments/files/23996865/DOC.TECNICA.MVC.-.TRISTACK.pdf)
